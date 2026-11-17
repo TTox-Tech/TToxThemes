@@ -1,0 +1,9 @@
+KvFlat.svg in this directory is the unmodified SVG of the "KvFlat" theme from Kvantum
+(https://github.com/tsujan/Kvantum, Kvantum/themes/kvthemes/KvFlat/KvFlat.svg),
+Copyright (C) Pedram Pourang (Tsu Jan) <tsujan2000@gmail.com>, licensed under the
+GNU General Public License version 3 or later.
+
+TToxThemes uses it only as a recolour base: build/targets/kde_kvantum.py reads it and
+writes recoloured copies to dist/kde/Kvantum/ttox-<variant>-<mode>/. The geometry is
+unchanged; only fill/stroke/stop colours are mapped onto the TTox palette. The generated
+files carry the same licence (GPL-3.0-or-later) and a comment naming the origin.
