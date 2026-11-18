@@ -53,7 +53,7 @@ window.createTToxDesktopDepth = (root,host) => {
  }
  function displayView(){
   const d=s.display;body.append(card('Display',slider('Desktop brightness',d.brightness,value=>send('display.brightness',{value}),'display-brightness',100,20),button(d.night?'Night light on':'Night light off',()=>send('display.night',{value:!d.night}),'display-night',{pressed:d.night}),slider('Warmth',d.warmth,value=>send('display.warmth',{value}),'display-warmth'),hint('External display brightness: unavailable in this demo. Native support depends on the display’s controls.')));
-  body.append(card('Power mode',select('Power policy',d.power,[['saver','Power saver'],['balanced','Balanced'],['performance','Performance']],value=>send('display.power',{value}),'display-power'),hint({saver:'Lite effects. Graphs collapse to numbers; inspector samples every 5 seconds.',balanced:'Restrained glass and 2-second inspector samples.',performance:'Full material effects and 1-second inspector samples.'}[d.power]),hint('Battery status: unavailable — this sample machine has no battery.')));
+  body.append(card('Power mode',select('Power policy',d.power,[['saver','Power saver'],['balanced','Balanced'],['performance','Performance']],value=>send('display.power',{value}),'display-power'),hint({saver:'Lite effects. Graphs collapse to numbers; inspector samples every 5 seconds.',balanced:'Restrained glass and 2-second inspector samples.',performance:'Full material effects and 1-second inspector samples.'}[d.power]),hint(s.hardware.battery?'Sample battery: '+s.hardware.battery.percent+'% · '+s.hardware.battery.watts+' W · '+s.hardware.battery.health+'% health.':'Battery status: unavailable — this sample machine has no battery.')));
   body.append(button('Reset display preferences',()=>{const old=s.display;send('display.reset');undo('Display preferences reset','display.restore',{value:old});},'display-reset'));
  }
  function notificationView(){
@@ -69,7 +69,7 @@ window.createTToxDesktopDepth = (root,host) => {
   body.append(tabs(['Overview','Processes','Storage','Sensors']));
   if(tab==='Overview'){
    body.append(row(button(s.system.frozen?'Resume samples':'Freeze samples',()=>send('system.freeze'),'system-freeze',{pressed:s.system.frozen}),select('History',String(range),[['15','15 seconds'],['30','30 seconds'],['60','60 seconds']],value=>{range=Number(value);render();},'system-range')));
-   const stats=el('div',null,'depth-stats');stats.append(metric('CPU',s.system.cpu+'%','cpu'),metric('Memory',s.system.memory+' / 8 GB','memory'),metric('Swap','0.2 / 2 GB'),metric('GPU','Provider unavailable'));body.append(stats);
+   const stats=el('div',null,'depth-stats');stats.append(metric('CPU',s.system.cpu+'%','cpu'),metric('Memory',s.system.memory+' / 8 GB','memory'),metric('Swap','0.2 / 2 GB'),metric('GPU',s.hardware.gpu?s.hardware.gpu.load+'% · '+s.hardware.gpu.name:'Provider unavailable'));body.append(stats);
    const graph=el('div',null,'depth-graph');graph.dataset.systemGraph='';graph.hidden=mode==='lite';body.append(graph);drawSystemGraph();
    const cores=el('div',null,'depth-stats');s.system.cores.forEach((v,i)=>cores.append(metric('Core '+i,v+'%','core'+i)));body.append(card('Per-core load',cores),hint('Sample replay · '+(s.system.frozen?'frozen':({full:1,balanced:2,lite:5}[mode])+'s interval')+' · '+s.system.elapsed+'s collected; history grows as samples arrive.'));
   }else if(tab==='Processes'){
@@ -79,7 +79,7 @@ window.createTToxDesktopDepth = (root,host) => {
    body.append(select('Volume',selectedDisk,s.system.disks.map(d=>[d.id,d.name+' · '+d.path]),id=>{selectedDisk=id;render();},'disk-select'));const d=s.system.disks.find(d=>d.id===selectedDisk);body.append(card(d.name,metric('Used',d.used+' / '+d.total+' GB'),metric('Free',(d.total-d.used)+' GB'),metric('Read / write',d.read+' / '+d.write+' MB/s'),hint('Mounted at '+d.path+' · ext4 · sample volume')));
   }else{
    if(s.system.sensors==='error')body.append(card('Sensor provider unavailable',hint('Last sample: CPU 46°C · fan 1,200 RPM. Values are stale.'),button('Retry provider',()=>run('Retrying sensor provider',()=>model.send('system.sensors',{state:'ready'})),'sensor-retry',{disabled:Boolean(job)})));
-   else body.append(card('Sensors',metric('CPU temperature','46°C'),metric('Fan','1,200 RPM'),hint('GPU and battery sensors are unavailable.'),button('Try provider failure',()=>send('system.sensors',{state:'error'}),'sensor-failure')));
+   else body.append(card('Sensors',metric('CPU temperature','46°C'),metric('Fan','1,200 RPM'),hint('Sample device data; unavailable sensors remain hidden.'),button('Try provider failure',()=>send('system.sensors',{state:'error'}),'sensor-failure')));
   }
  }
  function table(headers,rows){const t=el('table'),head=el('thead'),hr=el('tr');headers.forEach(h=>{const th=el('th',h);th.setAttribute('scope','col');hr.append(th);});head.append(hr);const b=el('tbody');for(const values of rows){const r=el('tr');values.forEach(v=>r.append(el('td',v)));b.append(r);}t.append(head,b);return t;}

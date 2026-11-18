@@ -5,7 +5,8 @@
   "scripts": {
     "test:depth": "node tests/check-desktop-model.cjs && node tests/check-depth-integration.cjs",
     "prepare:icons": "node tools/prepare-icons.cjs",
-    "test": "node tests/check-theme.cjs && node tests/check-surface-geometry.cjs && node tests/check-native-renderer.cjs && node tests/check-concurrent-renderers.cjs && node tests/check-desktop-controller.cjs && node tests/check-network-model.cjs && node tests/check-network-panel.cjs && node tests/check-prd-coverage.cjs && npm run test:depth"
+    "test": "node tests/check-theme.cjs && node tests/check-surface-geometry.cjs && node tests/check-native-renderer.cjs && node tests/check-concurrent-renderers.cjs && node tests/check-desktop-controller.cjs && node tests/check-network-model.cjs && node tests/check-network-panel.cjs && node tests/check-prd-coverage.cjs && npm run test:depth && npm run test:minimalistix",
+    "test:minimalistix": "node tests/check-minimalistix.cjs"
   },
   "devDependencies": {
     "linkedom": "0.18.12",

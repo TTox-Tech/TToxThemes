@@ -90,3 +90,11 @@ node tools/stamp-assets.cjs
 ```
 
 The full-shell DOM test executes the shipped HTML/controller and assets. It checks inter-panel routing, paired audio fallback, cancellation, expired arming, denied actions, dependent widget summaries, notification recovery, power/effects coupling, layouts, transport boundaries and note recovery. It also checks that slider/editor nodes survive continuous edits and no inspector timers remain after close. This does not render CSS or verify audible output. Live browser, real KDE/XFCE and low-RAM performance checks remain pending.
+
+## MinimalistiX theme and colour variants
+
+**MinimalistiX** is one theme with **Sterling**, **Vino** and **Graphite** colour variants. **V-R-V3N0M** is a separate theme. Choose Theme first, then Colour. Existing colour links and saved choices remain supported.
+
+Open `/?theme=minimalistix&colour=sterling&view=desktop`. This composition follows the five 18 November screenshot references: thin floating bar, bare clock and metrics, overlapping glass file/terminal windows, right dock, three-column HUD/Kali row, terminal drawer and launcher. Try H, backtick, Space, N and Escape while the desktop has focus. The UI remains a reference with sample providers.
+
+The native colour/geometry snapshot and mode ladder are centralized in `src/minimalistix-design.json`; rebuild with `node tools/build-minimalistix.cjs` and `node tools/stamp-assets.cjs`. Run `npm run test:minimalistix` for the new full-shell DOM stories. See `src/theme-taxonomy.md` for composition, compatibility, sample behavior and verification limits. Browser visuals and native KDE/XFCE behavior remain unverified.

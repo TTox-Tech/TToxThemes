@@ -1,0 +1,285 @@
+{
+  "provenance": "MinimalistiX geometry and colour roles from repository palettes.py/tokens.py at ba889097; arrangement aligned to screenshots supplied 18 November 2026.",
+  "palettes": {
+    "sterling": {
+      "title": "TTox Sterling",
+      "bg": "#1b1d21",
+      "surface": "#24272c",
+      "raised": "#2d3137",
+      "line": "#3a3f46",
+      "muted": "#7f858e",
+      "fg": "#c9ccd1",
+      "fg_hi": "#eef0f3",
+      "accent": "#5b8fc7",
+      "accent2": "#3f6a99",
+      "accent_text": "#7eaede",
+      "folder": "#5b8fc7",
+      "ok": "#7fa678",
+      "warn": "#c7a35b",
+      "err": "#c06a6a",
+      "cursor": "Bibata-Modern-Ice",
+      "term": [
+        "#1b1d21",
+        "#c06a6a",
+        "#7fa678",
+        "#c7a35b",
+        "#5b8fc7",
+        "#8a93a6",
+        "#6fa3b7",
+        "#c9ccd1",
+        "#4a5059",
+        "#d08484",
+        "#98bd90",
+        "#dcbd78",
+        "#7eaede",
+        "#a7afc2",
+        "#8dbfd2",
+        "#eef0f3"
+      ]
+    },
+    "vino": {
+      "title": "TTox Vino",
+      "bg": "#0f0f10",
+      "surface": "#171718",
+      "raised": "#202022",
+      "line": "#2c2c2f",
+      "muted": "#75716f",
+      "fg": "#d6d2cf",
+      "fg_hi": "#f2efec",
+      "accent": "#8e2a3a",
+      "accent2": "#5e1c27",
+      "accent_text": "#b04a5c",
+      "folder": "#a89aa6",
+      "ok": "#7e9a6c",
+      "warn": "#bf9a5a",
+      "err": "#b8464f",
+      "cursor": "Bibata-Modern-Classic",
+      "term": [
+        "#0f0f10",
+        "#b8464f",
+        "#7e9a6c",
+        "#bf9a5a",
+        "#8d7a8a",
+        "#b04a5c",
+        "#7f9a98",
+        "#d6d2cf",
+        "#3a3a3d",
+        "#d06670",
+        "#9bb58a",
+        "#d6b276",
+        "#a89aa6",
+        "#c8697a",
+        "#9ab7b5",
+        "#f2efec"
+      ]
+    },
+    "graphite": {
+      "title": "TTox Graphite",
+      "bg": "#1e1f21",
+      "surface": "#27292c",
+      "raised": "#303236",
+      "line": "#3d4044",
+      "muted": "#86888c",
+      "fg": "#d0d0cf",
+      "fg_hi": "#f0efed",
+      "accent": "#b9875a",
+      "accent2": "#8a6341",
+      "accent_text": "#d0a076",
+      "folder": "#b9875a",
+      "ok": "#8aa37a",
+      "warn": "#c9a85e",
+      "err": "#bd6b62",
+      "cursor": "Bibata-Modern-Classic",
+      "term": [
+        "#1e1f21",
+        "#bd6b62",
+        "#8aa37a",
+        "#c9a85e",
+        "#8b98a8",
+        "#b9875a",
+        "#89a6a3",
+        "#d0d0cf",
+        "#4a4c50",
+        "#d08a80",
+        "#a6bd96",
+        "#dcc07a",
+        "#a5b2c2",
+        "#d0a076",
+        "#a3bebb",
+        "#f0efed"
+      ]
+    }
+  },
+  "tokens": {
+    "radius": {
+      "window": 12,
+      "pill": 16,
+      "control": 8,
+      "wash": 6,
+      "popup": 12,
+      "menu": 8
+    },
+    "border": {
+      "active_px": 2,
+      "active_alpha": 0.6,
+      "inactive_px": 1,
+      "hairline_alpha": 0.12,
+      "sep_alpha": 0.3
+    },
+    "wash": {
+      "select_alpha": 0.28,
+      "hover_alpha": 0.06
+    },
+    "bar": {
+      "height": 32,
+      "top": 6,
+      "width_pct": 85,
+      "gap": 10,
+      "font_pt": 10
+    },
+    "dock": {
+      "width": 54,
+      "icon": 28,
+      "gap": 14,
+      "edge": 8
+    },
+    "titlebar": {
+      "height": 32
+    },
+    "clock": {
+      "font_pt": 56,
+      "x": 28,
+      "y": 70,
+      "alpha": 0.85
+    },
+    "term": {
+      "padding": 12,
+      "font_pt": 11
+    },
+    "launcher": {
+      "width": 560,
+      "font_pt": 12
+    },
+    "notify": {
+      "width": 360,
+      "timeout_ms": 5000
+    },
+    "hud": {
+      "width": 1200,
+      "slide_ms": 160
+    },
+    "drawer": {
+      "height_pct": 45
+    },
+    "grid": 8,
+    "font": {
+      "mono": "JetBrainsMono Nerd Font",
+      "mono_fallback": "DejaVu Sans Mono",
+      "ui": "Inter",
+      "ui_fallback": "Noto Sans",
+      "ui_pt": 10.5,
+      "mono_pt": 11
+    },
+    "motion_ms": {
+      "open": 180,
+      "close": 140,
+      "minimise": 220,
+      "popup": 120,
+      "workspace": 200,
+      "hover": 100
+    },
+    "icons": "Tela-circle",
+    "cursor_size": 24,
+    "contrast_min": 4.5,
+    "hotkeys": {
+      "hud": "Super+H",
+      "drawer": "Super+grave",
+      "launcher": "Super+space",
+      "edit": "Super+E",
+      "cheatsheet": "Super+slash"
+    }
+  },
+  "modes": {
+    "full": {
+      "term": 0.5,
+      "body": 0.62,
+      "bar": 0.7,
+      "popup": 0.72,
+      "lock": 0.55,
+      "blur": 14,
+      "blur_term": 20,
+      "noise": 0.05,
+      "shadows": true,
+      "shadow_px": 24,
+      "shadow_alpha": 0.3,
+      "animations": "full",
+      "anim_scale": 0.8,
+      "poll": 1,
+      "graphs": true,
+      "backend": "glx"
+    },
+    "balanced": {
+      "term": 0.62,
+      "body": 0.72,
+      "bar": 0.76,
+      "popup": 0.78,
+      "lock": 0.55,
+      "blur": 8,
+      "blur_term": 10,
+      "noise": 0.03,
+      "shadows": true,
+      "shadow_px": 12,
+      "shadow_alpha": 0.25,
+      "animations": "normal",
+      "anim_scale": 0.6,
+      "poll": 2,
+      "graphs": true,
+      "backend": "glx"
+    },
+    "lite": {
+      "term": 0.88,
+      "body": 0.92,
+      "bar": 0.92,
+      "popup": 0.94,
+      "lock": 0.9,
+      "blur": 0,
+      "blur_term": 0,
+      "noise": 0.0,
+      "shadows": false,
+      "shadow_px": 0,
+      "shadow_alpha": 0.0,
+      "animations": "minimal",
+      "anim_scale": 0.0,
+      "poll": 5,
+      "graphs": false,
+      "backend": "xrender"
+    }
+  },
+  "layout": {
+    "canvas_width": 1280,
+    "canvas_height": 720,
+    "files": {
+      "x": 7,
+      "y": 22,
+      "w": 44,
+      "h": 52
+    },
+    "terminal": {
+      "x": 41,
+      "y": 38,
+      "w": 50,
+      "h": 53
+    },
+    "monitor": {
+      "x": 79,
+      "y": 8,
+      "w": 15
+    },
+    "hud": {
+      "x": 6.5,
+      "y": 6.5,
+      "w": 87,
+      "h": 83
+    }
+  }
+}

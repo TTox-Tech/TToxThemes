@@ -17,3 +17,7 @@ Native KDE/XFCE application, real network/device/container operations, browser v
 ## Requests to core
 
 No shared-file changes are needed for this reference import. Future native integration should reconcile the reference's domain/provider contracts and tokens with `SPEC.md`; preview mock actions must not be presented as native capabilities.
+
+## MinimalistiX alignment — 18 November
+
+Theme/colour hierarchy corrected per the user. Added the screenshot-led MinimalistiX composition, shared-state HUD, drawer, launcher, sample file windows and an unframed metrics widget. The native palette/token snapshot is centralized in `preview/src/minimalistix-design.json`. Added a full-shell DOM regression for family switching, colour invariance, HUD actions, retained drawer state, launcher keyboard flow, Wi-Fi routing, workspaces/window geometry and lifecycle cleanup. Browser visual matching and native execution remain unverified.

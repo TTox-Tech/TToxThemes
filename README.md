@@ -1,5 +1,7 @@
 # TToxThemes
 
+**MinimalistiX** is the glass desktop theme; **Sterling**, **Vino** and **Graphite** are its colour variants. **V-R-V3N0M** is a separate symbiote theme.
+
 A modular desktop theme kit for Debian-family Linux, targeting KDE Plasma and XFCE. Native implementation is in progress; its current build contract and design values are in [SPEC.md](SPEC.md).
 
 The [interactive browser reference](preview/README.md) contains the V-R-V3N0M symbiote material, desktop controls, Wi-Fi flow, 40 documented interaction paths, source and regression checks. Its system metrics and operating-system actions are simulated.
