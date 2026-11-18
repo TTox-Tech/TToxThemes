@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200">
+<title>V-R-V3N0M original symbiote study</title>
+<desc>Black alien silhouette with pale eyes and glossy organic tendrils, against a dark background.</desc>
+<defs>
+ <radialGradient id="void" cx="76%" cy="36%" r="75%"><stop stop-color="#191b20"/><stop offset=".5" stop-color="#090a0c"/><stop offset="1" stop-color="#020203"/></radialGradient>
+ <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#030304"/><stop offset=".25" stop-color="#30333a"/><stop offset=".31" stop-color="#0b0c0e"/><stop offset=".56" stop-color="#020203"/><stop offset=".85" stop-color="#181a1e"/><stop offset="1" stop-color="#020203"/></linearGradient>
+ <linearGradient id="rim" x1="0" y1="0" x2="1" y2=".5"><stop stop-color="#020203"/><stop offset=".24" stop-color="#7b808a"/><stop offset=".32" stop-color="#25282e"/><stop offset=".49" stop-color="#050506"/><stop offset=".82" stop-color="#42464f"/><stop offset="1" stop-color="#020203"/></linearGradient>
+ <linearGradient id="thread" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#020203"/><stop offset=".45" stop-color="#181a1f"/><stop offset=".64" stop-color="#626771"/><stop offset=".72" stop-color="#111216"/><stop offset="1" stop-color="#030304"/></linearGradient>
+ <linearGradient id="eyes" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf0f7"/><stop offset=".6" stop-color="#a8adb8"/><stop offset="1" stop-color="#454953"/></linearGradient>
+ <radialGradient id="fade" cx="45%" cy="52%" r="70%"><stop stop-color="#020203" stop-opacity=".72"/><stop offset=".55" stop-color="#020203" stop-opacity=".3"/><stop offset="1" stop-color="#020203" stop-opacity="0"/></radialGradient>
+</defs>
+<path fill="url(#void)" d="M0 0H1920V1200H0Z"/>
+<!-- Broad alien form remains at the edge so the desktop centre stays readable. -->
+<path d="M1340 1200C1270 1080 1280 974 1200 886C1152 833 1198 745 1275 713C1203 660 1173 570 1205 470C1228 396 1272 359 1281 273C1295 133 1412 69 1520 116C1660 126 1746 244 1736 380C1765 493 1702 610 1630 701C1739 726 1801 837 1794 932C1874 1020 1897 1103 1920 1200Z" fill="url(#skin)"/>
+<path d="M1302 283C1303 181 1403 95 1513 128C1655 130 1713 243 1715 359" fill="none" stroke="url(#rim)" stroke-width="3"/>
+<path d="M1233 442C1283 416 1339 477 1440 511C1407 438 1349 387 1309 373C1286 407 1253 413 1233 442Z" fill="url(#eyes)" opacity=".74"/>
+<path d="M1503 512C1597 476 1681 380 1704 325C1681 429 1669 469 1613 517C1575 547 1527 535 1503 512Z" fill="url(#eyes)" opacity=".65"/>
+<path d="M1228 463C1260 468 1309 511 1402 534M1524 551C1601 553 1645 515 1672 468" fill="none" stroke="url(#rim)" stroke-width="9"/>
+<path d="M1281 609C1337 652 1411 666 1497 628C1550 600 1585 579 1623 566C1572 634 1511 688 1426 703C1369 697 1315 661 1281 609Z" fill="#020203"/>
+<path d="M1302 622C1373 658 1450 650 1498 630" fill="none" stroke="#454952" stroke-width="2" opacity=".5"/>
+<path d="M1311 760C1370 822 1396 926 1391 1111M1580 756C1506 859 1515 1050 1570 1199" fill="none" stroke="url(#rim)" stroke-width="24"/>
+<!-- Static tendrils; no shader, particles or continuous render loop. -->
+<g fill="none" stroke-linecap="round">
+ <path d="M2008 1147C1741 1092 1794 784 1602 789C1442 795 1535 1014 1307 1040C1108 1063 1098 844 930 873C824 892 939 1081 730 1171" stroke="url(#thread)" stroke-width="57"/>
+ <path d="M2046 1090C1813 1169 1704 938 1549 1025C1380 1117 1477 1202 1205 1205C958 1205 1016 1014 800 1047C677 1067 591 1181 410 1187" stroke="url(#thread)" stroke-width="29"/>
+ <path d="M1880 1200C1753 950 1800 757 1748 612C1690 445 1829 426 1906 478" stroke="url(#thread)" stroke-width="46"/>
+ <path d="M1997 628C1818 580 1862 275 1746 215C1697 190 1641 199 1597 154" stroke="url(#thread)" stroke-width="20"/>
+ <path d="M1964 1091C1753 1132 1652 928 1544 1020C1389 1157 1312 1228 1100 1115" stroke="url(#rim)" stroke-width="3"/>
+ <path d="M1506 796C1414 867 1439 983 1310 1027C1149 1083 1095 861 935 884" stroke="url(#rim)" stroke-width="3"/>
+ <path d="M809 1200C1033 1110 984 981 901 945C816 906 724 967 711 1023" stroke="url(#thread)" stroke-width="15"/>
+ <path d="M1874 849C1821 675 1925 652 1955 546" stroke="url(#rim)" stroke-width="5"/>
+</g>
+<path fill="url(#fade)" d="M0 0H1920V1200H0Z"/>
+</svg>

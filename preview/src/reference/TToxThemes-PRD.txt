@@ -1,0 +1,594 @@
+TToxThemes — PRD & Dev Plan
+17 Nov 2026 · @TTox.Tech
+1. Summary
+TToxThemes is a modular glass desktop kit for Debian-family Linux (Kali first) on KDE Plasma and XFCE: three restrained palettes, a top pill bar, a side mini-dock, placeable desktop widgets, a live-metrics HUD and a devtools drawer, all generated from one palette file and switched with one command. The visual target is the approved interactive mock; the design values live in the Design Spec doc.
+Goals
+• G1. The desktop matches the approved mock: one-sheet glass windows with a light outline, terminal as the most transparent surface, pill bar, mini-dock, bare clock.
+• G2. Wallpaper-led: the user's own illustration drives the tone; the kit picks the closest palette and nudges only the accent.
+• G3. Widgets are placeable, resizable and saved per profile; adding a widget needs no change to the core.
+• G4. Runs on any Debian-family distro; features degrade one tier at a time instead of failing the install.
+• G5. Lite mode keeps the look and stays usable on a 2 GB VM without 3D acceleration.
+• G6. Every change the installer makes is backed up and reversible with one command.
+Non-goals for v1: light variants, GNOME, Hyprland/niri, Wayland-only features, per-workspace layouts, a GUI settings app, publishing to an apt repository.
+What a 2-hour build can and cannot deliver. The code for every pack can be written, generated and statically checked in this session (Python runs, shell syntax, config parse, unit tests for the generator and the metrics daemon). It cannot be run on a real Plasma or XFCE session here: there is no display, compositor or Kali machine in the build environment. So v1 ships as "written and statically verified"; the first real install is on your machine, in the order given in section 10, and anything that fails there is a fix round, not a surprise. Parts most likely to need that round: Kvantum SVG recolour, Plasma panel scripting, Klassy/Panel Colorizer versions, eww window geometry.
+2. Users and use cases
+Primary user: a QE/DevOps engineer and security hobbyist who lives in the terminal, runs containers and VPN labs, and wants one desktop that looks deliberate and shows system state at a glance.
+#
+Use case
+Needs
+U1
+Install on a fresh Kali (KDE or XFCE) and get the full look in one run
+installer, capability detection, defaults
+U2
+Change palette or performance mode without logging out
+ttox-theme <variant> [mode]
+U3
+Drop in a new wallpaper and have the theme adapt
+wallpaper adapter, readability guard
+U4
+Put widgets where wanted, switch layouts for work / pentest / music
+edit mode, gallery, profiles
+U5
+See CPU, RAM, network, VPN, containers and ports live
+ttoxd, bar modules, HUD
+U6
+Stop or start a container, toggle monitor mode, restart a service from the HUD without mistakes
+2-step click, polkit
+U7
+Pull down a terminal with btop / lazydocker / k9s / logs ready
+devtools drawer
+U8
+Run the same kit on Debian, Ubuntu or Mint with no Kali tools
+packs, Kali pack optional
+U9
+Run it in a VM for labs
+lite mode auto-selected
+U10
+Write a custom widget
+widget template, schema docs
+U11
+Undo everything
+rollback, uninstall
+3. Scope: packs and tiers
+The kit is seven packs. Each installs alone on top of core, each can be enabled or disabled later, and a failure in one never blocks another.
+Pack
+Contents
+Needs
+v1
+core
+palettes, tokens, generator, fonts, icons (Tela-circle recolour), cursor, wallpapers + adapter, terminal + shell theme (zsh, starship, fastfetch, tmux, btop, bat), Rofi, notifications, ttox-theme CLI
+Python 3, any DE
+yes
+kde
+Plasma colour scheme, Kvantum theme, Konsole profile, KWin effect presets, window decoration config, top bar + side dock panels, SDDM + lock screen
+Plasma 5.27 or 6
+yes
+xfce
+GTK 3/4 CSS, xfwm4 theme, kitty + xfce4-terminal, picom presets, top bar + side dock panels, LightDM greeter
+XFCE 4.16+ , X11
+yes
+widgets
+ttoxd metrics daemon, eww desktop widgets, bar modules, HUD, widget gallery + edit mode, layout profiles, devtools drawer
+eww (or conky fallback)
+yes
+apps
+VS Code theme, Firefox userChrome, spicetify, GTK-on-KDE / Qt-on-XFCE bridging
+app present
+yes
+boot
+GRUB theme, Plymouth theme
+root, opt-in flag
+yes (opt-in)
+kali
+monitor-mode toggle, msf RPC / Burp indicators, target note, tool launcher tiles
+tool present
+yes
+Tiers inside a pack (the degrade path): Tier 0 colours + fonts + icons (always works) → Tier 1 shell layout: bar, dock, clock → Tier 2 glass: translucency, blur, rounded corners, outline → Tier 3 motion. The installer reports the tier reached per pack and why it stopped.
+The 20 improvements, mapped. In v1: 1 edit mode, 2 gallery, 3 widget sizes, 4 layout profiles, 6 widget-per-folder, 7 provider plugins, 8 feature flags, 9 tokens file, 10 widget template, 11 capability detection, 12 core tier, 13 eww fallback, 16 Kali pack, 17 readability guard, 18 empty/error states, 20 hotkeys + cheatsheet + rollback. v1 with reduced depth: 14 test matrix (container install tests for Debian 12/13, Ubuntu 24.04, Kali; no GUI assertions), 15 .deb packages (packaging files and a build script; no hosted repo), 19 multi-monitor (primary-screen placement + per-output config key; HiDPI follows DE scaling). Deferred to v1.1: 5 per-workspace layouts.
+4. Functional requirements A: look
+Every requirement has an ID; section 10 tests against these IDs.
+Palettes and tokens
+ID
+Requirement
+FR-P1
+Three palettes ship: Sterling (silver + steel blue), Vino (black + wine), Graphite (grey + copper), with the exact hex values in the Design Spec section 3.
+FR-P2
+A palette is 7 neutrals, 2 text tones, accent, accent2, accent_text, folder tint, and ok / warn / err. No generated file may contain a colour outside the active palette.
+FR-P3
+Accent appears only on: selection, focus ring, active tab underline, default button, prompt glyph, focused-app indicator, launcher glyph, toggles that are on.
+FR-P4
+Terminal 16-colour set stays on-palette: blue/magenta/cyan slots map to accent and palette greys.
+FR-P5
+All sizes, radii, opacities, fonts and durations come from one tokens file; no target hardcodes them.
+FR-P6
+Adding a palette is one dictionary entry plus a generator run; no other file changes.
+FR-P7
+The generator is deterministic: same inputs give byte-identical output.
+Glass and performance modes
+ID
+Requirement
+FR-G1
+Opacity ladder per mode (full / balanced / lite): terminal 50 / 62 / 88 %, window body 62 / 72 / 92 %, bar and dock 70 / 76 / 92 %, popups 72 / 78 / 94 %.
+FR-G2
+Blur: 14 px + 5 % noise in full, 8 px + 3 % in balanced, off in lite. Terminal uses the strongest blur available.
+FR-G3
+Mode off disables compositing entirely; reachable by flag only.
+FR-G4
+Switching mode is live (no logout) and changes blur, opacity, shadows, animation set and metrics poll interval together.
+FR-G5
+Readability guard: when the wallpaper region behind a surface is bright, that surface's opacity is raised until text contrast is at least 4.5:1; the guard is computed once per wallpaper, not per frame.
+FR-G6
+Install picks the mode automatically: lite in a VM or without GL, balanced on integrated graphics with under 6 GB RAM, full otherwise; the user can override.
+Windows
+ID
+Requirement
+FR-W1
+A window is one glass sheet: titlebar and body share colour and opacity, separated by a 1 px line at 30 %.
+FR-W2
+Active window: 2 px outline in fg at 60 %; inactive: 1 px line colour. Corner radius 12 px.
+FR-W3
+Titlebar 32 px, title left-aligned as ❯ name in mono; buttons right: maximise, close; close hover uses err. Minimise button configurable, off by default.
+FR-W4
+Controls: buttons 8 px radius; default button accent fill; inputs with 1 px accent focus ring; underline tabs; 6 px transient scrollbars; selection is accent at 28 % with 6 px radius.
+FR-W5
+Qt apps and GTK apps look the same on both DEs (Kvantum for Qt, GTK CSS for GTK, each installed on the other DE too).
+FR-W6
+Terminal: 12 px padding, no menubar, no scrollbar, tab bar hidden under two tabs, block cursor, no blink, prompt ❯ in accent with path on the line above.
+Wallpaper
+ID
+Requirement
+FR-WP1
+ttox-theme --wallpaper <file> sets the wallpaper, picks the closest palette by neutral temperature and luminance, and nudges accent by at most 12° hue and 10 % saturation toward the image's dominant mid-tone.
+FR-WP2
+--no-adapt keeps the pure palette; --palette <name> forces one.
+FR-WP3
+A blurred, darkened copy is rendered for login and lock screens.
+FR-WP4
+A generated fallback wallpaper exists per palette (soft shapes, grain, vignette) for when no image is given.
+FR-WP5
+The kit ships no third-party artwork.
+5. Functional requirements B: shell, widgets, HUD
+Top bar, dock, clock
+ID
+Requirement
+FR-B1
+Floating top pill bar: 32 px tall, 16 px radius, 6 px from the top, about 85 % of screen width, centred.
+FR-B2
+Left: launcher glyph, overview glyph, numbered workspace circles (active one filled and wider), date and time. Centre: now-playing title from MPRIS, empty when nothing plays. Right: modules, tray, volume, brightness, battery, power.
+FR-B3
+Bar modules, each switchable in bar.toml: cpu, ram, net, temp, vpn, docker count, updates, pomodoro, notifications. A module whose data source is missing hides itself.
+FR-B4
+Clicking a metrics module opens the HUD; clicking tray items opens their native popup.
+FR-B5
+Side mini-dock on the right edge, vertically centred, 54 px wide: pinned apps, running indicator on the outer edge (accent when focused), launcher glyph last; dodges windows.
+FR-B6
+Desktop clock: 56 pt mono light, top-left, no frame. It is a widget like any other and can be moved or removed.
+FR-B7
+On batteryless machines the battery module and widget do not render.
+Launcher, notifications, menus
+ID
+Requirement
+FR-L1
+Rofi launcher on both DEs: 560 px, popup glass, modes drun / run / window / power; Super+Space.
+FR-L2
+Notifications appear top-right under the bar, 360 px, popup glass, accent left edge when actionable, err edge when critical, 5 s timeout.
+FR-L3
+Menus and tooltips use popup glass, 8 px radius, 28 px items.
+FR-L4
+Super+/ shows a cheatsheet overlay of every TTox hotkey.
+Widgets
+ID
+Requirement
+FR-WD1
+A widget is a folder: widget.toml (id, title, sizes, providers needed, default position), a view file, optional script. Dropping a folder into the user widgets directory makes it available; no core file changes.
+FR-WD2
+Each widget supports up to three sizes: S (one value), M (value + graph), L (list or detail).
+FR-WD3
+Edit mode (Super+E): widgets show handles; drag to move, resize between S/M/L, remove; positions snap to an 8 px grid; Esc or the same hotkey saves and exits.
+FR-WD4
+Gallery: in edit mode a panel lists all installed widgets with a preview; selecting one places it on the desktop.
+FR-WD5
+Layout is stored in layout.toml per profile. Profiles shipped: minimal, work, pentest, music. ttox-theme --profile <name> switches live.
+FR-WD6
+Widgets shipped in v1: clock, date, sparklines (cpu / ram / net), system summary, battery, network interfaces, public IP, VPN, ports, docker, k8s, git repos, CI status, services, now playing, pomodoro, notes, clipboard, calendar, updates, target note (Kali), tool launcher (Kali).
+FR-WD7
+Every widget defines an empty state (no data source: one muted line saying what is missing) and an error state (provider failed: last value dimmed plus a warn dot).
+FR-WD8
+Widgets read colours and sizes only from the generated tokens stylesheet; switching palette or mode restyles them without restart.
+FR-WD9
+ttox-theme new-widget <name> scaffolds a working widget from a template.
+FR-WD10
+If eww is unavailable, a conky fallback renders clock + sparklines + system summary at fixed positions and the installer says widgets run in fallback mode.
+Metrics daemon (ttoxd)
+ID
+Requirement
+FR-M1
+One user-level daemon polls and writes a single JSON document; every consumer reads that file. Schema is versioned and documented.
+FR-M2
+Providers are plugins: system, network, sensors, battery, gpu, docker, k8s, git, ci, services, ports, vpn, media, updates, pomodoro, kali. A provider runs only while a visible widget or enabled bar module needs it.
+FR-M3
+Poll interval 1 s / 2 s / 5 s by mode; slow providers (public IP, CI, updates) have their own longer intervals and cache.
+FR-M4
+A provider that raises or times out is isolated: its section reports error with a message, others continue.
+FR-M5
+The daemon never runs as root. Privileged reads go through a small polkit helper with a fixed command list.
+FR-M6
+ttox-theme --metrics prints the current JSON; --metrics <provider> one section.
+FR-M7
+Runs as a systemd user service with restart on failure; ttox-theme --doctor reports its state.
+HUD and devtools
+ID
+Requirement
+FR-H1
+Super+H toggles a 1200 px glass overlay with three columns: System, Network, Dev, and a Kali row when the Kali pack is enabled. Esc or focus loss closes it.
+FR-H2
+System: per-core load, 60 s CPU graph, RAM, swap, GPU, disks, temperatures, fan, battery wattage and health, disk I/O, load, uptime.
+FR-H3
+Network: interfaces with address and mode (monitor mode in warn colour), throughput graph, public IP with ASN (cached 10 min), DNS, connection count, Tor state, VPN tunnel and profile, listening ports with process; clicking a port copies its ss line.
+FR-H4
+Dev: containers with CPU / memory / state and start, stop, restart, logs; k8s context, namespace and pod readiness; pinned repos with branch, ahead / behind, dirty count; CI last run per pinned repo; dev servers as links; services watchlist with toggles; pomodoro; clipboard; notes.
+FR-H5
+Any state-changing control needs two clicks within 2 s (first click arms and turns warn). Nothing in the HUD accepts a password; privileged actions go to polkit.
+FR-H6
+The HUD costs nothing when closed (its windows are closed, not hidden). In lite mode graphs are replaced by numbers.
+FR-H7
+Super+grave toggles a drop-down terminal (45 % height, terminal glass) attached to tmux session ttox with windows btop, lazydocker, k9s (if present), logs, scratch; state persists between toggles.
+FR-K1
+Kali row: monitor-mode toggle per wireless interface, msf RPC state, Burp proxy listener state, target note, tool launcher tiles. Each tile appears only if its tool is installed.
+6. Functional requirements C: install, CLI, portability
+Installer
+ID
+Requirement
+FR-I1
+install.sh runs interactively or fully by flags: --de kde|xfce|auto, --variant, --mode auto|full|balanced|lite, --packs core,kde,widgets,..., --with-boot, --offline, --dry-run, --yes.
+FR-I2
+Capability detection, never a distro-name check: package manager is apt; then DE and version, session type (X11 / Wayland), GL renderer, virtualisation, RAM, battery, available packages, presence of each optional tool.
+FR-I3
+Before changing anything, every file to be touched is copied to a timestamped backup directory and listed in a manifest.
+FR-I4
+Idempotent: running twice yields the same state and no duplicate config blocks.
+FR-I5
+--dry-run prints every package, file and setting that would change and exits without changes.
+FR-I6
+Each pack installs in its own step; a failed step is reported with the reason and the tier reached, and the rest continue. Exit code is non-zero only if core fails.
+FR-I7
+Missing packages are installed with apt after one confirmation listing them; nothing is installed from a third-party apt source. Components not in the distro's repositories (eww on some releases, Klassy, Panel Colorizer, picom animation fork, fonts, icons, cursor) are fetched from pinned upstream release URLs with SHA-256 verification, or skipped with a clear fallback.
+FR-I8
+Shell files are edited only inside a marked block (# >>> ttox >>> ... # <<< ttox <<<).
+FR-I9
+User-level by default: nothing under /etc or /usr changes unless --with-boot or the login-screen step is accepted.
+FR-I10
+uninstall.sh restores every backed-up file, removes what the kit added, and leaves installed apt packages alone unless --purge-packages is given.
+CLI (ttox-theme)
+ID
+Requirement
+FR-C1
+No arguments: prints variant, mode, DE, enabled packs, tier per pack.
+FR-C2
+<variant> [mode], --mode <m>: live switch on the running session.
+FR-C3
+--wallpaper <file> [--no-adapt] [--palette <p>].
+FR-C4
+--profile <name>, --edit (toggle widget edit mode), --hud, --drawer, --cheatsheet.
+FR-C5
+enable <pack|feature>, disable <pack|feature>; features include hud, drawer, desktop-widgets, desktop-icons, boot, kali.
+FR-C6
+--regen: reruns the generator after editing palettes or tokens and reapplies.
+FR-C7
+--doctor: checks compositor, blur, fonts, icon theme, daemon, eww, each provider; prints pass / warn / fail with the fix.
+FR-C8
+rollback: restores the state before the last apply; rollback --list shows snapshots.
+FR-C9
+new-widget <name>, --metrics [provider], --version.
+FR-C10
+Every subcommand has --help; unknown input exits 2 with usage.
+Portability and packaging
+ID
+Requirement
+FR-X1
+Supported: Debian 12 and 13, Ubuntu 24.04 and later, Kali rolling, Linux Mint 22, MX 23; KDE Plasma 5.27 / 6.x and XFCE 4.16+.
+FR-X2
+Plasma on Wayland: colours, Kvantum, panels, KWin effects apply; installer notes that results are tuned on X11. XFCE pack is X11 only.
+FR-X3
+Debian packaging: ttox-core, ttox-kde, ttox-xfce, ttox-widgets, ttox-apps, ttox-boot, ttox-kali with correct Depends / Recommends; make deb builds them.
+FR-X4
+Container install tests run install.sh --dry-run and the core pack on each supported base image.
+FR-X5
+Multi-monitor: bar, dock and widgets go to the primary output by default; output = "<name>" in config overrides per element.
+Login, boot, apps
+ID
+Requirement
+FR-S1
+SDDM theme (KDE) and LightDM GTK greeter config (XFCE): blurred wallpaper, centred glass card, mono clock, palette colours. Opt-in step because it needs root.
+FR-S2
+Lock screen matches the login screen.
+FR-S3
+GRUB theme and Plymouth theme behind --with-boot; /etc/default/grub backed up; menu timeout never set below 3 s; theme validated before update-grub.
+FR-A1
+VS Code colour theme per palette, installed as a local extension.
+FR-A2
+Firefox userChrome.css (colours and tab style only) into the default profile, with the required pref noted; skipped if no profile.
+FR-A3
+spicetify theme if spicetify is present.
+FR-A4
+App hooks only detect; they never install the app.
+7. Non-functional requirements
+ID
+Area
+Requirement
+NFR-1
+Performance
+ttoxd + eww idle: under 1 % CPU and under 40 MB RSS on a 4-core laptop; HUD open: under 3 % CPU.
+NFR-2
+Performance
+Lite mode in a VM without 3D: moving a window keeps compositor CPU under 15 %.
+NFR-3
+Performance
+Generator full run under 10 s; live palette switch under 3 s.
+NFR-4
+Performance
+HUD opens in under 200 ms; drawer in under 150 ms.
+NFR-5
+Safety
+No sudo without an explicit prompt naming what will change; no curl | sh; all downloads checksummed.
+NFR-6
+Safety
+No secrets in config or logs: public IP and CI tokens are read from the user's existing tools (gh, kubeconfig), never stored by the kit.
+NFR-7
+Safety
+State-changing HUD actions are two-step and logged to the user journal.
+NFR-8
+Reliability
+A crash of eww, ttoxd or picom never takes down the session; each is a restartable user service.
+NFR-9
+Reliability
+Rollback works even if the generator is broken (it only copies files from the backup).
+NFR-10
+Accessibility
+Text contrast at least 4.5:1 on every surface in every mode; focus is always visible; all actions reachable by keyboard.
+NFR-11
+Accessibility
+Animations respect the DE's reduced-motion / animation-speed-zero setting.
+NFR-12
+Maintainability
+Python: standard library plus Pillow and psutil only; type hints; unit tests for colour maths, generator determinism, providers with fakes.
+NFR-13
+Maintainability
+Shell: bash with set -euo pipefail, passes bash -n and shellcheck at warning level.
+NFR-14
+Licensing
+Kit is GPL-3.0. Derived files (Kvantum base SVG, Tela folder templates) keep their notices; third-party components are fetched from upstream, not vendored, except where the licence requires source alongside.
+NFR-15
+Docs
+README with install, switch, widgets, troubleshooting; a schema doc for metrics JSON; a widget authoring guide.
+8. Architecture
+Four layers with one-way dependencies: tokens → generator targets → appliers → runtime (daemon + widgets). Nothing downstream is edited by hand; it is regenerated.
+TToxThemes/
+  palettes.py            # colours (the only file edited for colour)
+  tokens.py              # ladder, radii, fonts, motion, sizes
+  build/
+    generate.py          # discovers build/targets/*.py, writes dist/
+    lib.py               # colour maths, rgba/mix, contrast, file helpers
+    wallpaper.py         # adapter + generated fallback + readability guard
+    targets/             # one module per output family, each: render(ctx) -> {path: content}
+      colors.py          # colors.scss/.css/.sh/.json consumed by everything at runtime
+      kde_*.py  xfce_*.py  shell_*.py  term_*.py  apps_*.py  boot_*.py
+  src/                   # static assets copied as-is (QML, SVG bases, templates)
+  dist/                  # generated: dist/<pack>/<target>/ttox-<variant>[-<mode>]...
+  scripts/
+    lib.sh               # log, have, backup, state, confirm, marked-block edit
+    detect.sh            # capability detection -> key=value
+    apply_kde.sh  apply_xfce.sh  apply_shell.sh  apply_apps.sh  apply_boot.sh
+  widgets/
+    ttoxd/               # daemon: core loop + providers/*.py + schema
+    eww/                 # eww.yuck, eww.scss, windows: bar-modules, desktop, hud, gallery, cheatsheet
+    library/<id>/        # one folder per widget: widget.toml, view.yuck, script
+    profiles/*.toml      # minimal, work, pentest, music
+    conky/               # fallback
+  bin/ttox-theme         # CLI
+  install.sh  uninstall.sh  Makefile  debian/  tests/  vendor.lock  README.md  LICENSE
+Contracts between parts
+Contract
+Producer
+Consumer
+Form
+Target module
+each build/targets/*.py
+generate.py
+NAME, PACK, render(ctx) -> dict[str, str or bytes]; paths relative to dist/; pure function of ctx
+ctx
+generate.py
+targets
+palette dict, tokens, all modes with their ladders, helpers from lib.py
+Runtime colours
+targets/colors.py
+eww, rofi, dunst, shell, CLI
+~/.config/ttox/current/colors.{scss,css,sh,json} symlinked to the active variant-mode
+Applier
+scripts/apply_<x>.sh <variant> <mode>
+installer, CLI
+idempotent, reads $TTOX_HOME/dist, backs up via lib.sh, exits 0 / 10 (partial, prints tier) / 1
+State
+installer, CLI
+everything
+~/.config/ttox/state.toml: variant, mode, de, packs, tiers, wallpaper, profile
+Metrics
+ttoxd
+eww, CLI
+$XDG_RUNTIME_DIR/ttox/metrics.json, schema v1, one top-level key per provider with status: ok|empty|error
+Widget
+widgets/library/<id>/
+eww loader, gallery
+widget.toml + view.yuck; reads only metrics keys it declares
+Layout
+edit mode, CLI
+eww loader
+~/.config/ttox/layouts/<profile>.toml: widget id, x, y, size, output
+Data flow at runtime: providers → ttoxd → metrics.json → eww deflisten → bar modules, desktop widgets, HUD. Palette or mode switch: CLI → repoint current/ symlinks → run appliers → reload eww, rofi, notifications, compositor.
+Why this shape: the target-module contract is what lets six people (or agents) build in parallel without touching each other's files, and it is the same seam a future palette, DE or app theme plugs into.
+9. Dev plan
+Six workstreams run in parallel on disjoint directories, behind a core that is written first. Each stream ends with its own static checks; integration runs the generator and all checks together.
+Stream
+Owns
+Delivers
+FRs
+0. Core (first, serial)
+palettes.py, tokens.py, build/generate.py, build/lib.py, targets/colors.py, scripts/lib.sh, SPEC
+contracts everyone builds on, runnable generator
+FR-P1..P7
+1. KDE
+build/targets/kde_*, src/kde/, scripts/apply_kde.sh
+colour scheme, Kvantum, Konsole, KWin presets, decoration, panels, SDDM, lock
+FR-G, FR-W, FR-B1/B5, FR-S1/S2
+2. XFCE
+build/targets/xfce_*, src/xfce/, scripts/apply_xfce.sh
+GTK 3/4 CSS, xfwm4, kitty, xfce4-terminal, picom, panels, LightDM
+FR-G, FR-W, FR-B1/B5, FR-S1
+3. Shell + terminal + wallpaper
+build/targets/shell_*, term_*, build/wallpaper.py, scripts/apply_shell.sh
+Rofi, Dunst, zsh, starship, fastfetch, tmux, btop, bat, icons recolour, fonts, cursor, wallpaper adapter + guard
+FR-L, FR-W6, FR-WP, FR-G5
+4. Widgets
+widgets/
+ttoxd + providers, eww bar modules, desktop widgets, edit mode, gallery, profiles, HUD, drawer, cheatsheet, Kali row, conky fallback, tests
+FR-WD, FR-M, FR-H, FR-K, FR-B3/B4/B6
+5. Apps + boot
+build/targets/apps_*, boot_*, src/boot/, scripts/apply_apps.sh, apply_boot.sh
+VS Code, Firefox, spicetify, GRUB, Plymouth
+FR-A, FR-S3
+6. Install + CLI + packaging
+install.sh, uninstall.sh, bin/ttox-theme, scripts/detect.sh, debian/, Makefile, tests/install/, vendor.lock, README.md
+installer, CLI, rollback, doctor, debs, container tests, docs
+FR-I, FR-C, FR-X
+7. Integration (last, serial)
+everything
+generator run for all variants and modes, all checks, fixes across seams, zip
+section 10
+Timeline (target 2 hours of build time)
+Minute
+What
+0–15
+Core written and run; SPEC frozen
+15–85
+Streams 1–6 in parallel
+85–110
+Integration: full generate, static checks, seam fixes
+110–120
+Package zip, README pass, known-issues list
+Checkpoints you will see: (1) core runs and prints the file count per target; (2) each stream reports files written and what it could not verify; (3) integration report with pass / fail per check; (4) the zip plus the first-install order from section 10.
+After the 2 hours (needs your machine): first real install in a VM snapshot, then fix rounds by pack. Expect one round each for KDE glass, XFCE glass and widgets.
+10. Acceptance tests
+Two lists: what is checked in the build session, and what only a real desktop can prove.
+Checked in the build session (automated)
+#
+Check
+Covers
+T1
+Generator runs for 3 palettes × 3 modes with no error; second run is byte-identical
+FR-P6, FR-P7
+T2
+Palette lint: no hex colour in dist/ outside the active palette and its computed mixes
+FR-P2
+T3
+Contrast test: text vs every surface at every ladder step, against black, mid and white backdrops, at least 4.5:1 after the guard
+FR-G5, NFR-10
+T4
+Config parse: INI / TOML / JSON / XML / SVG / desktop files parse; QML and yuck bracket balance
+all targets
+T5
+bash -n on every script; shellcheck where available
+NFR-13
+T6
+install.sh --dry-run in a fake HOME with stubbed commands for KDE and XFCE: prints a plan, changes nothing
+FR-I5
+T7
+Install to a fake HOME, twice, then uninstall: tree returns to the original; no duplicate marked blocks
+FR-I3, I4, I8, I10
+T8
+ttoxd unit tests with fake providers: schema valid, a failing provider is isolated, inactive providers do not run
+FR-M1..M4
+T9
+ttoxd real run in the build container for 30 s: CPU and RSS under budget for system / network providers
+NFR-1 (partial)
+T10
+Wallpaper adapter on synthetic cool / dark / warm images picks Sterling / Vino / Graphite and keeps the accent nudge within limits
+FR-WP1
+T11
+CLI: every subcommand --help exits 0; unknown input exits 2
+FR-C10
+T12
+Layout round-trip: write, load, move, save layout.toml
+FR-WD5
+Checked on your machine (in this order, in a VM snapshot first)
+[ ] A1. ./install.sh --dry-run output reads sane for your DE and distro.
+[ ] A2. ./install.sh --packs core: fonts, icons, cursor, terminal and prompt change; nothing else.
+[ ] A3. Add your DE pack: windows are one glass sheet with the light outline; terminal shows the wallpaper through blur; bar and dock sit where the mock shows.
+[ ] A4. ttox-theme vino, ttox-theme graphite balanced, ttox-theme --mode lite: all live, under 3 s.
+[ ] A5. ttox-theme --wallpaper <your illustration>: palette chosen makes sense; text stays readable over the brightest area.
+[ ] A6. Widgets pack: sparklines move; Super+E lets you drag, resize and save; --profile pentest swaps the layout.
+[ ] A7. Super+H: numbers agree with btop; stop then start a container with the two-step click; monitor-mode toggle asks polkit.
+[ ] A8. Super+grave: drawer opens with the tmux windows.
+[ ] A9. ttox-theme --doctor is all pass or explains each warn.
+[ ] A10. Idle for 5 minutes: ttoxd + eww under 1 % CPU.
+[ ] A11. Login-screen step, then (optional) --with-boot and a reboot.
+[ ] A12. ttox-theme rollback, then ./uninstall.sh: desktop is back to stock.
+A step that fails goes back as a fix round with the --doctor output and a screenshot.
+11. Risks, defaults, open questions
+Risks
+Risk
+Likelihood
+Effect
+Handling
+No real desktop in the build environment
+certain
+visual and integration bugs surface only on first install
+static checks T1–T12; staged install order A1–A12; tiers so a failure is local
+Plasma 5 vs 6 differences (panel scripting API, KWin config keys, Kvantum Qt5/Qt6)
+high
+panels or effects misapplied
+detect version; separate code paths; Tier 0 always applies
+Klassy / Panel Colorizer not packaged for the distro
+high
+square corners, plain panel
+fetch pinned release if a matching build exists; else Breeze decoration with translucent scheme and a stock floating panel styled by the Plasma theme
+eww missing from repos
+medium
+no widgets
+pinned prebuilt binary, then source build, then conky fallback
+Kvantum SVG recolour misses an element
+medium
+one control off-palette
+palette lint T2 on the SVG; manual pass after first install
+eww cannot do free drag natively
+medium
+edit mode clumsier than the mock
+edit mode implemented as a full-screen eww overlay with per-widget move/resize handles driven by a helper script; arrow-key nudging as a fallback
+picom animation fork fails to build
+medium
+no XFCE animations
+stock picom: blur, rounding, fade still work
+GRUB / Plymouth misconfiguration
+low
+boot menu hidden
+opt-in; backup; validation; timeout floor of 3 s
+Wallpaper very bright
+medium
+unreadable terminal at 50 %
+readability guard raises opacity per surface
+Scope is large for 2 hours
+high
+some widgets or app themes thinner than specified
+priority order: core, DE packs, widgets core (daemon, bar, sparklines, HUD), installer / CLI, then gallery / edit mode, apps, boot, debs; anything cut is listed in the final report, not hidden
+Decisions taken by default (change any of them)
+• Terminal: Konsole on KDE, kitty on XFCE with xfce4-terminal as fallback.
+• Widget engine: eww on both DEs; Plasma's own widgets only inside the panels.
+• Minimise button hidden; desktop icons off.
+• Default profile work; default bar modules: cpu, ram, net, vpn, docker, updates.
+• Licence GPL-3.0.
+• No telemetry of any kind; public-IP lookup is the only outbound call and can be disabled.
+• Hotkeys: Super+H HUD, Super+grave drawer, Super+Space launcher, Super+E edit mode, Super+/ cheatsheet.
+Open questions (not blocking the build)
+• Your 4–6 wallpapers, to tune the adapter on real images.
+• Plasma version on your Kali install (plasmashell --version) and whether you log in on X11 or Wayland.
+• Pinned repos and GitHub account for the git / CI widgets (read through gh; nothing is stored).
+• Any HUD tile for cloud contexts (AWS / GCP profile, kube clusters beyond the current context).

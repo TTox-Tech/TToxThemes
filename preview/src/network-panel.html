@@ -1,0 +1,46 @@
+<section class="room-panel room-wifi" role="dialog" aria-modal="true" aria-label="Wi-Fi network settings" hidden>
+ <header><button id="net-back" aria-label="Back to control center">←</button><span>Network / Wi-Fi <small class="net-demo">DEMO REPLAY · NO SYSTEM ACCESS</small></span><button data-close="wifi" aria-label="Close network settings">×</button></header>
+ <div class="net-toolbar"><label class="net-radio"><input id="net-radio" type="checkbox" checked> Wi-Fi</label><span id="net-connection-state" aria-live="polite">Connected</span><button id="net-scan">Scan networks</button></div>
+ <div class="net-layout">
+  <aside class="net-sidebar" aria-label="Available Wi-Fi networks"><h3>Networks</h3><div id="net-networks"></div><p class="net-caption">Sample access points. This preview does not scan your device.</p></aside>
+  <section class="net-inspector" aria-label="Selected network">
+   <div class="net-network-heading"><div><h3 id="net-ssid">Studio Wi-Fi</h3><span id="net-security" class="net-caption"></span></div><span id="net-saved" class="net-badge">Saved profile</span></div>
+   <nav class="net-tabs" aria-label="Network detail sections"><button id="net-overview-tab" aria-pressed="true" aria-controls="net-overview">Overview</button><button id="net-settings-tab" aria-pressed="false" aria-controls="net-settings">Connection settings</button></nav>
+   <div id="net-overview">
+    <div class="net-stats"><div><span>Signal</span><b id="net-signal">86% / −49 dBm</b></div><div><span>Link rate</span><b id="net-rate">866 Mb/s</b></div><div><span>Band / channel</span><b id="net-band">5 GHz / 44</b></div></div>
+    <div class="net-transfer"><span>↓ <b id="net-down">142 KB/s</b></span><span>↑ <b id="net-up">18 KB/s</b></span><small id="net-sample-label">Demo replay</small></div>
+    <svg class="net-throughput" viewBox="0 0 500 70" preserveAspectRatio="none" role="img" aria-label="Demo download and upload history, in KB per second"><path id="net-down-path" fill="none" stroke="currentColor" stroke-width="2"/><path id="net-up-path" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 3"/></svg>
+    <p id="net-chart-range" class="net-caption"></p>
+    <dl id="net-details" class="net-details"></dl>
+    <div class="net-actions"><button id="net-connect">Connect</button><button id="net-disconnect">Disconnect</button><button id="net-forget">Forget profile</button><button id="net-diagnostics">Diagnostics</button></div>
+    <div id="net-diagnostic-output" class="net-diagnostic-output" aria-live="polite" hidden></div>
+    <form id="net-password-form" class="net-auth" hidden autocomplete="off">
+     <label for="net-password">Wi-Fi passphrase</label><div class="net-password-line"><input id="net-password" type="password" maxlength="64" autocomplete="off" aria-describedby="net-secret-note"><button id="net-show-password" type="button" aria-pressed="false">Show</button></div>
+     <p id="net-secret-note" class="net-caption">Demo: use a test passphrase. It is not sent, logged or saved.</p>
+     <div class="net-actions"><button id="net-password-submit" type="submit">Connect in demo</button><button id="net-password-cancel" type="button">Cancel</button></div>
+    </form>
+   </div>
+   <div id="net-settings" hidden>
+    <p class="net-caption" id="net-settings-help">Connect to this network before editing its profile.</p>
+    <form id="net-settings-form">
+     <div class="net-form-grid">
+      <label>IPv4 method<select id="net-ipv4"><option value="auto">Automatic / DHCP</option><option value="manual">Manual</option></select></label>
+      <label>IPv6 method<select id="net-ipv6"><option value="auto">Automatic</option><option value="disabled">Disabled</option></select></label>
+      <label>IPv4 address / prefix<input id="net-address" placeholder="192.0.2.24/24" spellcheck="false" autocapitalize="off"></label>
+      <label>Gateway<input id="net-gateway" placeholder="192.0.2.1" spellcheck="false" autocapitalize="off"></label>
+      <label class="net-span"><span><input id="net-dns-auto" type="checkbox" checked> Automatic DNS</span><input id="net-dns" aria-label="Manual IPv4 DNS servers" placeholder="1.1.1.1, 9.9.9.9" spellcheck="false" autocapitalize="off"></label>
+      <label>MTU / bytes<input id="net-mtu" type="number" min="0" max="9000" step="1" value="0"><small>0 uses the automatic value.</small></label>
+      <label>MAC privacy<select id="net-mac"><option value="stable">Stable private address</option><option value="random">Random on reconnect</option><option value="permanent">Device address</option></select></label>
+      <label>Metered connection<select id="net-metered"><option value="auto">Automatic</option><option value="yes">Metered</option><option value="no">Unmetered</option></select></label>
+      <label class="net-checkbox"><input id="net-autoconnect" type="checkbox" checked> Connect automatically</label>
+     </div>
+     <div class="net-actions"><button id="net-review-button" type="submit">Review changes</button><button id="net-reset" type="button">Reset draft</button></div>
+    </form>
+    <section id="net-review" class="net-review" aria-label="Review connection changes" hidden><h3>Review changes</h3><div id="net-diff"></div><p class="net-caption">Demo only. The installed theme will use your desktop's authorization prompt when required.</p><div class="net-actions"><button id="net-apply">Apply in demo</button><button id="net-review-cancel">Back to editing</button></div></section>
+    <section id="net-checkpoint" class="net-review" aria-label="Confirm connection settings" hidden><p>Keep these settings? Reverting in <b id="net-countdown">15</b>s.</p><div class="net-actions"><button id="net-keep">Keep settings</button><button id="net-revert">Revert now</button></div></section>
+   </div>
+   <p id="net-error" class="net-error" role="alert" hidden></p><p id="net-message" class="net-message" role="status"></p>
+  </section>
+ </div>
+ <footer>Session-only demo · <span id="net-poll-label">2-second samples while this panel is open</span> · passwords excluded from storage</footer>
+</section>

@@ -1,0 +1,6 @@
+*.tar.gz
+*.tar
+node_modules/
+
+# Installed from pinned npm dependencies for the browser reference.
+dist/assets/lucide.min.js

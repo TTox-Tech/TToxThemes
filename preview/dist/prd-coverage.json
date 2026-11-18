@@ -1,0 +1,1407 @@
+{
+  "date": "17 November 2026",
+  "requirement_count": 107,
+  "native_end_to_end_verified": 0,
+  "counts": {
+    "blocked": 1,
+    "scaffold": 35,
+    "missing": 66,
+    "unverified": 5
+  },
+  "rows": [
+    {
+      "id": "FR-P1",
+      "requirement": "Three palettes ship: Sterling (silver + steel blue), Vino (black + wine), Graphite (grey + copper), with the exact hex values in the Design Spec section 3.",
+      "pack": "core",
+      "native_status": "blocked",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [
+        "palettes.py; preview themes.js"
+      ],
+      "gap": "Exact Design Spec colours were not supplied. Native provisional dictionaries and preview dictionaries differ; V-R-V3N0M is a later user-added theme."
+    },
+    {
+      "id": "FR-P2",
+      "requirement": "A palette is 7 neutrals, 2 text tones, accent, accent2, accent_text, folder tint, and ok / warn / err. No generated file may contain a colour outside the active palette.",
+      "pack": "core",
+      "native_status": "scaffold",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [
+        "palettes.py; build/targets/colors.py"
+      ],
+      "gap": "Palette dictionaries and export renderer exist; no dist generation/lint validates the active palette."
+    },
+    {
+      "id": "FR-P3",
+      "requirement": "Accent appears only on: selection, focus ring, active tab underline, default button, prompt glyph, focused-app indicator, launcher glyph, toggles that are on.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [],
+      "gap": "Palette/token helpers exist, but generator, targets, lint and exact Design Spec integration are incomplete."
+    },
+    {
+      "id": "FR-P4",
+      "requirement": "Terminal 16-colour set stays on-palette: blue/magenta/cyan slots map to accent and palette greys.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [],
+      "gap": "Palette/token helpers exist, but generator, targets, lint and exact Design Spec integration are incomplete."
+    },
+    {
+      "id": "FR-P5",
+      "requirement": "All sizes, radii, opacities, fonts and durations come from one tokens file; no target hardcodes them.",
+      "pack": "core",
+      "native_status": "scaffold",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [
+        "tokens.py; build/targets/colors.py"
+      ],
+      "gap": "Token table exists; no target system consumes it end-to-end. Preview has separate tokens and hardcoded geometry."
+    },
+    {
+      "id": "FR-P6",
+      "requirement": "Adding a palette is one dictionary entry plus a generator run; no other file changes.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [],
+      "gap": "Palette/token helpers exist, but generator, targets, lint and exact Design Spec integration are incomplete."
+    },
+    {
+      "id": "FR-P7",
+      "requirement": "The generator is deterministic: same inputs give byte-identical output.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Four web palettes exist independently of native palettes.py/tokens.py.",
+      "evidence": [],
+      "gap": "Palette/token helpers exist, but generator, targets, lint and exact Design Spec integration are incomplete."
+    },
+    {
+      "id": "FR-G1",
+      "requirement": "Opacity ladder per mode (full / balanced / lite): terminal 50 / 62 / 88 %, window body 62 / 72 / 92 %, bar and dock 70 / 76 / 92 %, popups 72 / 78 / 94 %.",
+      "pack": "core/DE",
+      "native_status": "scaffold",
+      "preview": "Browser glass/motion/lite behaviours are references only.",
+      "evidence": [
+        "tokens.py"
+      ],
+      "gap": "Correct native ladder values are recorded but unapplied; browser material does not prove them."
+    },
+    {
+      "id": "FR-G2",
+      "requirement": "Blur: 14 px + 5 % noise in full, 8 px + 3 % in balanced, off in lite. Terminal uses the strongest blur available.",
+      "pack": "core/DE",
+      "native_status": "scaffold",
+      "preview": "Browser glass/motion/lite behaviours are references only.",
+      "evidence": [
+        "tokens.py"
+      ],
+      "gap": "Blur/noise values exist; no KWin/picom blur/noise applier."
+    },
+    {
+      "id": "FR-G3",
+      "requirement": "Mode off disables compositing entirely; reachable by flag only.",
+      "pack": "core/DE",
+      "native_status": "scaffold",
+      "preview": "Browser glass/motion/lite behaviours are references only.",
+      "evidence": [
+        "tokens.py; bin/ttox_runtime.py"
+      ],
+      "gap": "Off is parsed; no compositor disable integration."
+    },
+    {
+      "id": "FR-G4",
+      "requirement": "Switching mode is live (no logout) and changes blur, opacity, shadows, animation set and metrics poll interval together.",
+      "pack": "core/DE",
+      "native_status": "missing",
+      "preview": "Browser: Effects and power policy share state; material, graph visibility and 1/2/5-second inspector polling change together. Native live mode switching remains absent.",
+      "evidence": [],
+      "gap": "No native compositor/effect appliers or live mode integration exist."
+    },
+    {
+      "id": "FR-G5",
+      "requirement": "Readability guard: when the wallpaper region behind a surface is bright, that surface's opacity is raised until text contrast is at least 4.5:1; the guard is computed once per wallpaper, not per frame.",
+      "pack": "core/DE",
+      "native_status": "scaffold",
+      "preview": "Browser glass/motion/lite behaviours are references only.",
+      "evidence": [
+        "build/lib.py:guarded_opacity"
+      ],
+      "gap": "Contrast helper exists; no wallpaper region sampling/cache or target applier uses it."
+    },
+    {
+      "id": "FR-G6",
+      "requirement": "Install picks the mode automatically: lite in a VM or without GL, balanced on integrated graphics with under 6 GB RAM, full otherwise; the user can override.",
+      "pack": "core/DE",
+      "native_status": "scaffold",
+      "preview": "Browser glass/motion/lite behaviours are references only.",
+      "evidence": [
+        "bin/ttox_runtime.py:detect"
+      ],
+      "gap": "Capability heuristic exists; GPU classification/session edge cases and automatic selection are untested."
+    },
+    {
+      "id": "FR-W1",
+      "requirement": "A window is one glass sheet: titlebar and body share colour and opacity, separated by a 1 px line at 30 %.",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-W2",
+      "requirement": "Active window: 2 px outline in fg at 60 %; inactive: 1 px line colour. Corner radius 12 px.",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-W3",
+      "requirement": "Titlebar 32 px, title left-aligned as \u276f name in mono; buttons right: maximise, close; close hover uses err. Minimise button configurable, off by default.",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-W4",
+      "requirement": "Controls: buttons 8 px radius; default button accent fill; inputs with 1 px accent focus ring; underline tabs; 6 px transient scrollbars; selection is accent at 28 % with 6 px radius.",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-W5",
+      "requirement": "Qt apps and GTK apps look the same on both DEs (Kvantum for Qt, GTK CSS for GTK, each installed on the other DE too).",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-W6",
+      "requirement": "Terminal: 12 px padding, no menubar, no scrollbar, tab bar hidden under two tabs, block cursor, no blink, prompt \u276f in accent with path on the line above.",
+      "pack": "KDE/XFCE",
+      "native_status": "missing",
+      "preview": "HTML window/terminal styling is not a DE theme.",
+      "evidence": [],
+      "gap": "No Kvantum, KWin decoration, GTK, xfwm or terminal target/applier exists."
+    },
+    {
+      "id": "FR-WP1",
+      "requirement": "ttox-theme --wallpaper <file> sets the wallpaper, picks the closest palette by neutral temperature and luminance, and nudges accent by at most 12\u00b0 hue and 10 % saturation toward the image's dominant mid-tone.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Original symbiote SVG exists; it is not the native wallpaper pipeline.",
+      "evidence": [],
+      "gap": "Wallpaper adaptation, per-palette generation and login/lock derivatives are missing."
+    },
+    {
+      "id": "FR-WP2",
+      "requirement": "--no-adapt keeps the pure palette; --palette <name> forces one.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Original symbiote SVG exists; it is not the native wallpaper pipeline.",
+      "evidence": [],
+      "gap": "Wallpaper adaptation, per-palette generation and login/lock derivatives are missing."
+    },
+    {
+      "id": "FR-WP3",
+      "requirement": "A blurred, darkened copy is rendered for login and lock screens.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Original symbiote SVG exists; it is not the native wallpaper pipeline.",
+      "evidence": [],
+      "gap": "Wallpaper adaptation, per-palette generation and login/lock derivatives are missing."
+    },
+    {
+      "id": "FR-WP4",
+      "requirement": "A generated fallback wallpaper exists per palette (soft shapes, grain, vignette) for when no image is given.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Original symbiote SVG exists; it is not the native wallpaper pipeline.",
+      "evidence": [],
+      "gap": "Wallpaper adaptation, per-palette generation and login/lock derivatives are missing."
+    },
+    {
+      "id": "FR-WP5",
+      "requirement": "The kit ships no third-party artwork.",
+      "pack": "core",
+      "native_status": "missing",
+      "preview": "Original symbiote SVG exists; it is not the native wallpaper pipeline.",
+      "evidence": [],
+      "gap": "Wallpaper adaptation, per-palette generation and login/lock derivatives are missing."
+    },
+    {
+      "id": "FR-B1",
+      "requirement": "Floating top pill bar: 32 px tall, 16 px radius, 6 px from the top, about 85 % of screen width, centred.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B2",
+      "requirement": "Left: launcher glyph, overview glyph, numbered workspace circles (active one filled and wider), date and time. Centre: now-playing title from MPRIS, empty when nothing plays. Right: modules, tray, volume, brightness, battery, power.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B3",
+      "requirement": "Bar modules, each switchable in bar.toml: cpu, ram, net, temp, vpn, docker count, updates, pomodoro, notifications. A module whose data source is missing hides itself.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B4",
+      "requirement": "Clicking a metrics module opens the HUD; clicking tray items opens their native popup.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "Browser: Wi-Fi plus Bluetooth/audio/display inspectors now have connected domain state. Native tray integration remains absent.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B5",
+      "requirement": "Side mini-dock on the right edge, vertically centred, 54 px wide: pinned apps, running indicator on the outer edge (accent when focused), launcher glyph last; dodges windows.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B6",
+      "requirement": "Desktop clock: 56 pt mono light, top-left, no frame. It is a widget like any other and can be moved or removed.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "missing",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [],
+      "gap": "Native panel/dock/tray/module/clock integration is missing."
+    },
+    {
+      "id": "FR-B7",
+      "requirement": "On batteryless machines the battery module and widget do not render.",
+      "pack": "KDE/XFCE/widgets",
+      "native_status": "scaffold",
+      "preview": "HTML bar/dock and sample metrics exist; no real tray, workspace or app binding.",
+      "evidence": [
+        "bin/ttox_runtime.py:detect"
+      ],
+      "gap": "Battery presence is detected, but there are no native module/widget consumers."
+    },
+    {
+      "id": "FR-L1",
+      "requirement": "Rofi launcher on both DEs: 560 px, popup glass, modes drun / run / window / power; Super+Space.",
+      "pack": "core/widgets",
+      "native_status": "missing",
+      "preview": "Web command palette and sample notifications exist.",
+      "evidence": [],
+      "gap": "Rofi, notification daemon styling and global hotkey/cheatsheet integration are missing."
+    },
+    {
+      "id": "FR-L2",
+      "requirement": "Notifications appear top-right under the bar, 360 px, popup glass, accent left edge when actionable, err edge when critical, 5 s timeout.",
+      "pack": "core/widgets",
+      "native_status": "missing",
+      "preview": "Browser: grouped/read/snoozed history, actionable navigation, timed DND, per-app quiet delivery and isolated Undo. Native notification service/style timing remains absent.",
+      "evidence": [],
+      "gap": "Rofi, notification daemon styling and global hotkey/cheatsheet integration are missing."
+    },
+    {
+      "id": "FR-L3",
+      "requirement": "Menus and tooltips use popup glass, 8 px radius, 28 px items.",
+      "pack": "core/widgets",
+      "native_status": "missing",
+      "preview": "Web command palette and sample notifications exist.",
+      "evidence": [],
+      "gap": "Rofi, notification daemon styling and global hotkey/cheatsheet integration are missing."
+    },
+    {
+      "id": "FR-L4",
+      "requirement": "Super+/ shows a cheatsheet overlay of every TTox hotkey.",
+      "pack": "core/widgets",
+      "native_status": "missing",
+      "preview": "Web command palette and sample notifications exist.",
+      "evidence": [],
+      "gap": "Rofi, notification daemon styling and global hotkey/cheatsheet integration are missing."
+    },
+    {
+      "id": "FR-WD1",
+      "requirement": "A widget is a folder: widget.toml (id, title, sizes, providers needed, default position), a view file, optional script. Dropping a folder into the user widgets directory makes it available; no core file changes.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Current hosted desktop has sample cards; current edit/gallery/profile controls are absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD2",
+      "requirement": "Each widget supports up to three sizes: S (one value), M (value + graph), L (list or detail).",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: gallery S/M/L changes compact content and responsive width. Native widget manifests/views and full per-widget detail layouts remain absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD3",
+      "requirement": "Edit mode (Super+E): widgets show handles; drag to move, resize between S/M/L, remove; positions snap to an 8 px grid; Esc or the same hotkey saves and exits.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: keyboard-operable move controls reorder widgets and DOM. Free-position drag, 8px snap and native edit mode remain absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD4",
+      "requirement": "Gallery: in edit mode a panel lists all installed widgets with a preview; selecting one places it on the desktop.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: installed sample widget gallery supports add/remove with Undo. User widget-folder discovery and native gallery remain absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD5",
+      "requirement": "Layout is stored in layout.toml per profile. Profiles shipped: minimal, work, pentest, music. ttox-theme --profile <name> switches live.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: minimal/work/pentest/music layouts persist independently in local storage. Native layout.toml and CLI profile switching remain absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD6",
+      "requirement": "Widgets shipped in v1: clock, date, sparklines (cpu / ram / net), system summary, battery, network interfaces, public IP, VPN, ports, docker, k8s, git repos, CI status, services, now playing, pomodoro, notes, clipboard, calendar, updates, target note (Kali), tool launcher (Kali).",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Current hosted desktop has sample cards; current edit/gallery/profile controls are absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD7",
+      "requirement": "Every widget defines an empty state (no data source: one muted line saying what is missing) and an error state (provider failed: last value dimmed plus a warn dot).",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: network, Bluetooth, media, sensors and Kubernetes expose explicit failure/empty states and recovery. Native provider error contracts remain absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD8",
+      "requirement": "Widgets read colours and sizes only from the generated tokens stylesheet; switching palette or mode restyles them without restart.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Current hosted desktop has sample cards; current edit/gallery/profile controls are absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-WD9",
+      "requirement": "ttox-theme new-widget <name> scaffolds a working widget from a template.",
+      "pack": "widgets",
+      "native_status": "scaffold",
+      "preview": "Current hosted desktop has sample cards; current edit/gallery/profile controls are absent.",
+      "evidence": [
+        "bin/ttox_runtime.py:new-widget"
+      ],
+      "gap": "Basic TOML/yuck scaffold exists, without a working discovery/render/schema pipeline."
+    },
+    {
+      "id": "FR-WD10",
+      "requirement": "If eww is unavailable, a conky fallback renders clock + sparklines + system summary at fixed positions and the installer says widgets run in fallback mode.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Current hosted desktop has sample cards; current edit/gallery/profile controls are absent.",
+      "evidence": [],
+      "gap": "Native widget discovery, views, size/layout engine, edit/gallery/profiles and fallback are missing."
+    },
+    {
+      "id": "FR-M1",
+      "requirement": "One user-level daemon polls and writes a single JSON document; every consumer reads that file. Schema is versioned and documented.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser demo adapters are not a native metrics daemon.",
+      "evidence": [],
+      "gap": "ttoxd, provider plugins, schema, atomic producer and user service are missing."
+    },
+    {
+      "id": "FR-M2",
+      "requirement": "Providers are plugins: system, network, sensors, battery, gpu, docker, k8s, git, ci, services, ports, vpn, media, updates, pomodoro, kali. A provider runs only while a visible widget or enabled bar module needs it.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser demo adapters are not a native metrics daemon.",
+      "evidence": [],
+      "gap": "ttoxd, provider plugins, schema, atomic producer and user service are missing."
+    },
+    {
+      "id": "FR-M3",
+      "requirement": "Poll interval 1 s / 2 s / 5 s by mode; slow providers (public IP, CI, updates) have their own longer intervals and cache.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Wi-Fi demo polling uses 1/2/5 seconds by mode and stops closed/hidden; no native TTL/provider schedule.",
+      "evidence": [],
+      "gap": "ttoxd, provider plugins, schema, atomic producer and user service are missing."
+    },
+    {
+      "id": "FR-M4",
+      "requirement": "A provider that raises or times out is isolated: its section reports error with a message, others continue.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: sample sensor failure retains labeled stale values and retries without stopping system sampling. Native provider isolation remains absent.",
+      "evidence": [],
+      "gap": "ttoxd, provider plugins, schema, atomic producer and user service are missing."
+    },
+    {
+      "id": "FR-M5",
+      "requirement": "The daemon never runs as root. Privileged reads go through a small polkit helper with a fixed command list.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser demo adapters are not a native metrics daemon.",
+      "evidence": [],
+      "gap": "ttoxd, provider plugins, schema, atomic producer and user service are missing."
+    },
+    {
+      "id": "FR-M6",
+      "requirement": "ttox-theme --metrics prints the current JSON; --metrics <provider> one section.",
+      "pack": "widgets",
+      "native_status": "scaffold",
+      "preview": "Browser demo adapters are not a native metrics daemon.",
+      "evidence": [
+        "bin/ttox_runtime.py:--metrics"
+      ],
+      "gap": "Reader for metrics.json exists; producer/schema/providers are absent."
+    },
+    {
+      "id": "FR-M7",
+      "requirement": "Runs as a systemd user service with restart on failure; ttox-theme --doctor reports its state.",
+      "pack": "widgets",
+      "native_status": "scaffold",
+      "preview": "Browser demo adapters are not a native metrics daemon.",
+      "evidence": [
+        "bin/ttox_runtime.py:doctor"
+      ],
+      "gap": "Doctor queries ttoxd.service; no service unit or daemon exists."
+    },
+    {
+      "id": "FR-H1",
+      "requirement": "Super+H toggles a 1200 px glass overlay with three columns: System, Network, Dev, and a Kali row when the Kali pack is enabled. Esc or focus loss closes it.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "System/dev tables are samples; Wi-Fi has a session-only demo adapter.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H2",
+      "requirement": "System: per-core load, 60 s CPU graph, RAM, swap, GPU, disks, temperatures, fan, battery wattage and health, disk I/O, load, uptime.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: CPU/core replay, bounded history, freeze, process filter/sort, disk details and sensor failure/retry. No actual /proc/sensor provider.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H3",
+      "requirement": "Network: interfaces with address and mode (monitor mode in warn colour), throughput graph, public IP with ASN (cached 10 min), DNS, connection count, Tor state, VPN tunnel and profile, listening ports with process; clicking a port copies its ss line.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "New Wi-Fi panel includes AP/link/IP/DNS/traffic/profile-edit demo. Native network/Tor/VPN/ports/ASN provider coverage remains missing.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H4",
+      "requirement": "Dev: containers with CPU / memory / state and start, stop, restart, logs; k8s context, namespace and pod readiness; pinned repos with branch, ahead / behind, dirty count; CI last run per pinned repo; dev servers as links; services watchlist with toggles; pomodoro; clipboard; notes.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: connected container actions/logs/notifications, service denial, namespace readiness, media queue and durable notes. Native Docker/MPRIS/k8s/services/tmux integration remains absent.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H5",
+      "requirement": "Any state-changing control needs two clicks within 2 s (first click arms and turns warn). Nothing in the HUD accepts a password; privileged actions go to polkit.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: container/service and destructive Bluetooth actions use 2-click/2s arming and cancellation. Ordinary settings remain single-step; blanket policy remains unresolved. No polkit adapter.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H6",
+      "requirement": "The HUD costs nothing when closed (its windows are closed, not hidden). In lite mode graphs are replaced by numbers.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "Browser: system inspector timers stop on close/hidden/freeze; Lite hides graphs. Inspector DOM remains mounted, so the native close-window requirement is not fulfilled.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-H7",
+      "requirement": "Super+grave toggles a drop-down terminal (45 % height, terminal glass) attached to tmux session ttox with windows btop, lazydocker, k9s (if present), logs, scratch; state persists between toggles.",
+      "pack": "widgets",
+      "native_status": "missing",
+      "preview": "System/dev tables are samples; Wi-Fi has a session-only demo adapter.",
+      "evidence": [],
+      "gap": "Native HUD, complete providers, privileged action routing and tmux drawer are missing."
+    },
+    {
+      "id": "FR-K1",
+      "requirement": "Kali row: monitor-mode toggle per wireless interface, msf RPC state, Burp proxy listener state, target note, tool launcher tiles. Each tile appears only if its tool is installed.",
+      "pack": "kali",
+      "native_status": "missing",
+      "preview": "No current Kali row.",
+      "evidence": [],
+      "gap": "No Kali provider, tool detection UI, monitor-mode polkit helper or target-note integration exists."
+    },
+    {
+      "id": "FR-I1",
+      "requirement": "install.sh runs interactively or fully by flags: --de kde|xfce|auto, --variant, --mode auto|full|balanced|lite, --packs core,kde,widgets,..., --with-boot, --offline, --dry-run, --yes.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "install.sh; bin/ttox_runtime.py:install"
+      ],
+      "gap": "Flags parse; boot is rejected, package installation is absent and core cannot generate."
+    },
+    {
+      "id": "FR-I2",
+      "requirement": "Capability detection, never a distro-name check: package manager is apt; then DE and version, session type (X11 / Wayland), GL renderer, virtualisation, RAM, battery, available packages, presence of each optional tool.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "scripts/detect.sh; bin/ttox_runtime.py:detect"
+      ],
+      "gap": "Detection reads some capabilities; package availability/version/session matrix is incomplete."
+    },
+    {
+      "id": "FR-I3",
+      "requirement": "Before changing anything, every file to be touched is copied to a timestamped backup directory and listed in a manifest.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "bin/ttox_runtime.py:Transaction"
+      ],
+      "gap": "File/symlink/missing-path manifests exist; not all settings/parent directories or pack actions are covered/tested."
+    },
+    {
+      "id": "FR-I4",
+      "requirement": "Idempotent: running twice yields the same state and no duplicate config blocks.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "bin/ttox_runtime.py; scripts/lib.sh"
+      ],
+      "gap": "Marked-block replacement exists; repeated full installs are untested and generator is absent."
+    },
+    {
+      "id": "FR-I5",
+      "requirement": "--dry-run prints every package, file and setting that would change and exits without changes.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "bin/ttox_runtime.py:install"
+      ],
+      "gap": "Dry-run emits broad paths rather than the exact full per-file/settings plan required."
+    },
+    {
+      "id": "FR-I6",
+      "requirement": "Each pack installs in its own step; a failed step is reported with the reason and the tier reached, and the rest continue. Exit code is non-zero only if core fails.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "bin/ttox_runtime.py:apply"
+      ],
+      "gap": "Pack loop exists but reports coarse tier 0; targets/appliers and tier-degradation paths are missing."
+    },
+    {
+      "id": "FR-I7",
+      "requirement": "Missing packages are installed with apt after one confirmation listing them; nothing is installed from a third-party apt source. Components not in the distro's repositories (eww on some releases, Klassy, Panel Colorizer, picom animation fork, fonts, icons, cursor) are fetched from pinned upstream release URLs with SHA-256 verification, or skipped with a clear fallback.",
+      "pack": "installer",
+      "native_status": "missing",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [],
+      "gap": "No apt installation, pinned upstream vendor.lock, SHA-256 download flow or component fallback exists."
+    },
+    {
+      "id": "FR-I8",
+      "requirement": "Shell files are edited only inside a marked block (# >>> ttox >>> ... # <<< ttox <<<).",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "scripts/lib.sh; bin/ttox_runtime.py:marked-block"
+      ],
+      "gap": "Marked-block helper exists; no full shell applier or duplicate-block regression."
+    },
+    {
+      "id": "FR-I9",
+      "requirement": "User-level by default: nothing under /etc or /usr changes unless --with-boot or the login-screen step is accepted.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "bin/ttox_runtime.py"
+      ],
+      "gap": "User-level intent exists; login/boot permission flow is unimplemented."
+    },
+    {
+      "id": "FR-I10",
+      "requirement": "uninstall.sh restores every backed-up file, removes what the kit added, and leaves installed apt packages alone unless --purge-packages is given.",
+      "pack": "installer",
+      "native_status": "scaffold",
+      "preview": "No browser proof can satisfy installer requirements.",
+      "evidence": [
+        "uninstall.sh; bin/ttox_runtime.py"
+      ],
+      "gap": "Reverse-manifest restoration exists; full install/uninstall tree restoration has not been tested."
+    },
+    {
+      "id": "FR-C1",
+      "requirement": "No arguments: prints variant, mode, DE, enabled packs, tier per pack.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:cli"
+      ],
+      "gap": "Prints state JSON; no complete installed native state exists."
+    },
+    {
+      "id": "FR-C2",
+      "requirement": "<variant> [mode], --mode <m>: live switch on the running session.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:apply"
+      ],
+      "gap": "Routes palette/mode requests to an absent generator/applier pipeline."
+    },
+    {
+      "id": "FR-C3",
+      "requirement": "--wallpaper <file> [--no-adapt] [--palette <p>].",
+      "pack": "CLI",
+      "native_status": "missing",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:--wallpaper"
+      ],
+      "gap": "CLI accepts wallpaper flags but explicitly raises \u201cnot yet connected\u201d; no adaptation/application exists."
+    },
+    {
+      "id": "FR-C4",
+      "requirement": "--profile <name>, --edit (toggle widget edit mode), --hud, --drawer, --cheatsheet.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py"
+      ],
+      "gap": "References missing profiles/eww windows/drawer; no global hotkey integration."
+    },
+    {
+      "id": "FR-C5",
+      "requirement": "enable <pack|feature>, disable <pack|feature>; features include hud, drawer, desktop-widgets, desktop-icons, boot, kali.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py"
+      ],
+      "gap": "Pack selection exists; runtime feature toggles explicitly refuse unsupported operations."
+    },
+    {
+      "id": "FR-C6",
+      "requirement": "--regen: reruns the generator after editing palettes or tokens and reapplies.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:--regen"
+      ],
+      "gap": "Generator is referenced but absent."
+    },
+    {
+      "id": "FR-C7",
+      "requirement": "--doctor: checks compositor, blur, fonts, icon theme, daemon, eww, each provider; prints pass / warn / fail with the fix.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:doctor"
+      ],
+      "gap": "Limited checks exist; blur/icons/provider health/fixes are incomplete."
+    },
+    {
+      "id": "FR-C8",
+      "requirement": "rollback: restores the state before the last apply; rollback --list shows snapshots.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:Transaction.restore"
+      ],
+      "gap": "Copy-based rollback and listing exist; no full baseline/rollback acceptance test."
+    },
+    {
+      "id": "FR-C9",
+      "requirement": "new-widget <name>, --metrics [provider], --version.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py"
+      ],
+      "gap": "Version/basic widget scaffold/file-reader exist; working widget/metrics producers do not."
+    },
+    {
+      "id": "FR-C10",
+      "requirement": "Every subcommand has --help; unknown input exits 2 with usage.",
+      "pack": "CLI",
+      "native_status": "scaffold",
+      "preview": "Browser actions are not ttox-theme CLI commands.",
+      "evidence": [
+        "bin/ttox_runtime.py:argparse"
+      ],
+      "gap": "Representative help/version exits pass and unknown command returns 2; full CLI inventory/behaviour is not accepted."
+    },
+    {
+      "id": "FR-X1",
+      "requirement": "Supported: Debian 12 and 13, Ubuntu 24.04 and later, Kali rolling, Linux Mint 22, MX 23; KDE Plasma 5.27 / 6.x and XFCE 4.16+.",
+      "pack": "portability",
+      "native_status": "missing",
+      "preview": "Responsive web layout is not Linux multi-monitor support.",
+      "evidence": [],
+      "gap": "No complete supported-distro/DE/Wayland/container/multi-output validation or packaging exists."
+    },
+    {
+      "id": "FR-X2",
+      "requirement": "Plasma on Wayland: colours, Kvantum, panels, KWin effects apply; installer notes that results are tuned on X11. XFCE pack is X11 only.",
+      "pack": "portability",
+      "native_status": "missing",
+      "preview": "Responsive web layout is not Linux multi-monitor support.",
+      "evidence": [],
+      "gap": "No complete supported-distro/DE/Wayland/container/multi-output validation or packaging exists."
+    },
+    {
+      "id": "FR-X3",
+      "requirement": "Debian packaging: ttox-core, ttox-kde, ttox-xfce, ttox-widgets, ttox-apps, ttox-boot, ttox-kali with correct Depends / Recommends; make deb builds them.",
+      "pack": "portability",
+      "native_status": "missing",
+      "preview": "Responsive web layout is not Linux multi-monitor support.",
+      "evidence": [],
+      "gap": "No complete supported-distro/DE/Wayland/container/multi-output validation or packaging exists."
+    },
+    {
+      "id": "FR-X4",
+      "requirement": "Container install tests run install.sh --dry-run and the core pack on each supported base image.",
+      "pack": "portability",
+      "native_status": "missing",
+      "preview": "Responsive web layout is not Linux multi-monitor support.",
+      "evidence": [],
+      "gap": "No complete supported-distro/DE/Wayland/container/multi-output validation or packaging exists."
+    },
+    {
+      "id": "FR-X5",
+      "requirement": "Multi-monitor: bar, dock and widgets go to the primary output by default; output = \"<name>\" in config overrides per element.",
+      "pack": "portability",
+      "native_status": "missing",
+      "preview": "Responsive web layout is not Linux multi-monitor support.",
+      "evidence": [],
+      "gap": "No complete supported-distro/DE/Wayland/container/multi-output validation or packaging exists."
+    },
+    {
+      "id": "FR-S1",
+      "requirement": "SDDM theme (KDE) and LightDM GTK greeter config (XFCE): blurred wallpaper, centred glass card, mono clock, palette colours. Opt-in step because it needs root.",
+      "pack": "login/boot",
+      "native_status": "missing",
+      "preview": "No current boot/login preview or native integration.",
+      "evidence": [],
+      "gap": "SDDM, LightDM, lock screen, GRUB and Plymouth targets/appliers are missing."
+    },
+    {
+      "id": "FR-S2",
+      "requirement": "Lock screen matches the login screen.",
+      "pack": "login/boot",
+      "native_status": "missing",
+      "preview": "No current boot/login preview or native integration.",
+      "evidence": [],
+      "gap": "SDDM, LightDM, lock screen, GRUB and Plymouth targets/appliers are missing."
+    },
+    {
+      "id": "FR-S3",
+      "requirement": "GRUB theme and Plymouth theme behind --with-boot; /etc/default/grub backed up; menu timeout never set below 3 s; theme validated before update-grub.",
+      "pack": "login/boot",
+      "native_status": "missing",
+      "preview": "No current boot/login preview or native integration.",
+      "evidence": [],
+      "gap": "SDDM, LightDM, lock screen, GRUB and Plymouth targets/appliers are missing."
+    },
+    {
+      "id": "FR-A1",
+      "requirement": "VS Code colour theme per palette, installed as a local extension.",
+      "pack": "apps",
+      "native_status": "missing",
+      "preview": "No real app hooks.",
+      "evidence": [],
+      "gap": "VS Code, Firefox, spicetify and toolkit bridge targets/appliers are missing."
+    },
+    {
+      "id": "FR-A2",
+      "requirement": "Firefox userChrome.css (colours and tab style only) into the default profile, with the required pref noted; skipped if no profile.",
+      "pack": "apps",
+      "native_status": "missing",
+      "preview": "No real app hooks.",
+      "evidence": [],
+      "gap": "VS Code, Firefox, spicetify and toolkit bridge targets/appliers are missing."
+    },
+    {
+      "id": "FR-A3",
+      "requirement": "spicetify theme if spicetify is present.",
+      "pack": "apps",
+      "native_status": "missing",
+      "preview": "No real app hooks.",
+      "evidence": [],
+      "gap": "VS Code, Firefox, spicetify and toolkit bridge targets/appliers are missing."
+    },
+    {
+      "id": "FR-A4",
+      "requirement": "App hooks only detect; they never install the app.",
+      "pack": "apps",
+      "native_status": "missing",
+      "preview": "No real app hooks.",
+      "evidence": [],
+      "gap": "VS Code, Firefox, spicetify and toolkit bridge targets/appliers are missing."
+    },
+    {
+      "id": "NFR-1",
+      "requirement": "ttoxd + eww idle: under 1 % CPU and under 40 MB RSS on a 4-core laptop; HUD open: under 3 % CPU.",
+      "pack": "quality",
+      "native_status": "unverified",
+      "preview": "Simulation/GL compiler tests exist; no ttoxd+eww CPU/RSS benchmark.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-2",
+      "requirement": "Lite mode in a VM without 3D: moving a window keeps compositor CPU under 15 %.",
+      "pack": "quality",
+      "native_status": "unverified",
+      "preview": "No VM compositor measurement.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-3",
+      "requirement": "Generator full run under 10 s; live palette switch under 3 s.",
+      "pack": "quality",
+      "native_status": "unverified",
+      "preview": "No complete generator/live desktop switch benchmark.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-4",
+      "requirement": "HUD opens in under 200 ms; drawer in under 150 ms.",
+      "pack": "quality",
+      "native_status": "unverified",
+      "preview": "No native HUD/drawer latency benchmark.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-5",
+      "requirement": "No sudo without an explicit prompt naming what will change; no curl | sh; all downloads checksummed.",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "installer scaffold"
+      ],
+      "gap": "No elevation performed here; apt/upstream checksummed-fetch and root approval flows are absent."
+    },
+    {
+      "id": "NFR-6",
+      "requirement": "No secrets in config or logs: public IP and CI tokens are read from the user's existing tools (gh, kubeconfig), never stored by the kit.",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "preview network-model.js/network-panel.js; native scaffold"
+      ],
+      "gap": "Demo secret wiping and secret-free snapshots are tested; native CI/public-IP/secret-agent integrations are missing."
+    },
+    {
+      "id": "NFR-7",
+      "requirement": "State-changing HUD actions are two-step and logged to the user journal.",
+      "pack": "quality",
+      "native_status": "missing",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-8",
+      "requirement": "A crash of eww, ttoxd or picom never takes down the session; each is a restartable user service.",
+      "pack": "quality",
+      "native_status": "missing",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-9",
+      "requirement": "Rollback works even if the generator is broken (it only copies files from the backup).",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "bin/ttox_runtime.py:Transaction.restore"
+      ],
+      "gap": "Restore is separate from generator, but native round-trip/broken-generator recovery is untested."
+    },
+    {
+      "id": "NFR-10",
+      "requirement": "Text contrast at least 4.5:1 on every surface in every mode; focus is always visible; all actions reachable by keyboard.",
+      "pack": "quality",
+      "native_status": "unverified",
+      "preview": "Selected opaque charcoal contrast and keyboard flows have checks; all wallpaper/surface/mode combinations are not verified.",
+      "evidence": [],
+      "gap": "Native end-to-end verification has not run."
+    },
+    {
+      "id": "NFR-11",
+      "requirement": "Animations respect the DE's reduced-motion / animation-speed-zero setting.",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "browser renderer/controller"
+      ],
+      "gap": "Browser reduced-motion is handled; native DE animation-speed/reduced-motion detection is absent."
+    },
+    {
+      "id": "NFR-12",
+      "requirement": "Python: standard library plus Pillow and psutil only; type hints; unit tests for colour maths, generator determinism, providers with fakes.",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "native Python helpers"
+      ],
+      "gap": "Stdlib helpers/type hints exist; full generator/provider/colour test suite is absent."
+    },
+    {
+      "id": "NFR-13",
+      "requirement": "Shell: bash with set -euo pipefail, passes bash -n and shellcheck at warning level.",
+      "pack": "quality",
+      "native_status": "scaffold",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [
+        "existing five Bash entrypoints/helpers"
+      ],
+      "gap": "bash -n passes for current scripts; shellcheck unavailable and most pack scripts are unwritten."
+    },
+    {
+      "id": "NFR-14",
+      "requirement": "Kit is GPL-3.0. Derived files (Kvantum base SVG, Tela folder templates) keep their notices; third-party components are fetched from upstream, not vendored, except where the licence requires source alongside.",
+      "pack": "quality",
+      "native_status": "missing",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [],
+      "gap": "Native LICENSE is absent; derivative-source and upstream licensing/distribution requirements have not been completed."
+    },
+    {
+      "id": "NFR-15",
+      "requirement": "README with install, switch, widgets, troubleshooting; a schema doc for metrics JSON; a widget authoring guide.",
+      "pack": "quality",
+      "native_status": "missing",
+      "preview": "Browser/simulation checks are a separate evidence set.",
+      "evidence": [],
+      "gap": "Kit README/troubleshooting, native metrics schema and widget-authoring guide are absent. Site README is not a kit manual."
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "T1",
+      "requirement": "Generator runs for 3 palettes \u00d7 3 modes with no error; second run is byte-identical",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T2",
+      "requirement": "Palette lint: no hex colour in dist/ outside the active palette and its computed mixes",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T3",
+      "requirement": "Contrast test: text vs every surface at every ladder step, against black, mid and white backdrops, at least 4.5:1 after the guard",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T4",
+      "requirement": "Config parse: INI / TOML / JSON / XML / SVG / desktop files parse; QML and yuck bracket balance",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T5",
+      "requirement": "bash -n on every script; shellcheck where available",
+      "status": "partial",
+      "evidence": "Five existing Bash scripts pass bash -n. shellcheck is unavailable; pack scripts are missing."
+    },
+    {
+      "id": "T6",
+      "requirement": "install.sh --dry-run in a fake HOME with stubbed commands for KDE and XFCE: prints a plan, changes nothing",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T7",
+      "requirement": "Install to a fake HOME, twice, then uninstall: tree returns to the original; no duplicate marked blocks",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T8",
+      "requirement": "ttoxd unit tests with fake providers: schema valid, a failing provider is isolated, inactive providers do not run",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T9",
+      "requirement": "ttoxd real run in the build container for 30 s: CPU and RSS under budget for system / network providers",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T10",
+      "requirement": "Wallpaper adapter on synthetic cool / dark / warm images picks Sterling / Vino / Graphite and keeps the accent nudge within limits",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "T11",
+      "requirement": "CLI: every subcommand --help exits 0; unknown input exits 2",
+      "status": "partial",
+      "evidence": "Representative global/command help exits 0, --version exits 0, invalid command exits 2. Full inventory not verified."
+    },
+    {
+      "id": "T12",
+      "requirement": "Layout round-trip: write, load, move, save layout.toml",
+      "status": "not-run",
+      "evidence": "Required native feature or test harness is missing."
+    },
+    {
+      "id": "A1",
+      "requirement": "./install.sh --dry-run output reads sane for your DE and distro.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A2",
+      "requirement": "./install.sh --packs core: fonts, icons, cursor, terminal and prompt change; nothing else.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A3",
+      "requirement": "Add your DE pack: windows are one glass sheet with the light outline; terminal shows the wallpaper through blur; bar and dock sit where the mock shows.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A4",
+      "requirement": "ttox-theme vino, ttox-theme graphite balanced, ttox-theme --mode lite: all live, under 3 s.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A5",
+      "requirement": "ttox-theme --wallpaper <your illustration>: palette chosen makes sense; text stays readable over the brightest area.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A6",
+      "requirement": "Widgets pack: sparklines move; Super+E lets you drag, resize and save; --profile pentest swaps the layout.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A7",
+      "requirement": "Super+H: numbers agree with btop; stop then start a container with the two-step click; monitor-mode toggle asks polkit.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A8",
+      "requirement": "Super+grave: drawer opens with the tmux windows.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A9",
+      "requirement": "ttox-theme --doctor is all pass or explains each warn.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A10",
+      "requirement": "Idle for 5 minutes: ttoxd + eww under 1 % CPU.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A11",
+      "requirement": "Login-screen step, then (optional) --with-boot and a reboot.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    },
+    {
+      "id": "A12",
+      "requirement": "ttox-theme rollback, then ./uninstall.sh: desktop is back to stock.",
+      "status": "not-run",
+      "evidence": "Requires a complete native kit and a real KDE/XFCE desktop/VM."
+    }
+  ],
+  "changes": [
+    [
+      "User extension",
+      "Add V-R-V3N0M as a fourth theme, inspired by the supplied liquid code; retain the system cursor."
+    ],
+    [
+      "User extension",
+      "Both KDE and XFCE are first-release targets; 2\u20134 GB/VM hardware is the primary design target."
+    ],
+    [
+      "User extension",
+      "Keyboard and mouse are equally supported; restrained glass with a dense layout and Android-style control center."
+    ],
+    [
+      "User extension",
+      "Independent concurrent tendrils preserve A hold while B seeks/holds; budgets are explicit, performance unverified."
+    ],
+    [
+      "User extension",
+      "Wi-Fi inspection/profile editing/passphrase flow is requested. Preview is demo-only; native system authorization must use polkit/secret-agent APIs."
+    ],
+    [
+      "Scope boundary",
+      "The user explicitly requested HTML as a reference. Browser work is not acceptance evidence for Linux packs."
+    ],
+    [
+      "Unresolved deviation",
+      "Native panels vs eww/Conky architecture has been proposed, not formally reconciled with the PRD renderer contract."
+    ],
+    [
+      "Unresolved deviation",
+      "Palette/token duplication, exact original geometry, full global hotkeys and blanket two-click action policy need reconciliation; do not silently drop requirements."
+    ]
+  ],
+  "priorities": [
+    "P0: Freeze contracts; connect one palette/token source; implement generator and colour/contrast/determinism checks.",
+    "P0: Complete exact dry-run plans, baseline snapshots and install\u2192reinstall\u2192rollback\u2192uninstall tests before asking for a real install.",
+    "P1: Build KDE and XFCE colour/window/terminal/panel/compositor appliers with capability/version gates and explicit per-pack tiers.",
+    "P1: Implement ttoxd/schema/providers/user units, then real network/privileged actions and complete System/Network/Dev/Kali HUD coverage.",
+    "P1: Complete widget folder contract, S/M/L, edit/gallery/grid persistence, four profiles and Conky fallback; restore every required hotkey and tmux drawer.",
+    "P2: Finish wallpaper adaptation/guard, app/toolkit bridges, optional login/lock/boot, all seven .deb packages and container distro matrix.",
+    "Acceptance: Run T1\u2013T12, then A1\u2013A12 on target desktops; report measured budgets and failed/degraded features without substituting browser simulations."
+  ],
+  "realism": [
+    [
+      "1",
+      "Single palette/token generator",
+      "FR-P1\u2013P7"
+    ],
+    [
+      "2",
+      "Full terminal/shell targets",
+      "FR-W6 / core pack"
+    ],
+    [
+      "3",
+      "KDE window glass/decoration",
+      "FR-W1\u2013W5"
+    ],
+    [
+      "4",
+      "XFCE GTK/xfwm/picom",
+      "FR-W1\u2013W5"
+    ],
+    [
+      "5",
+      "Real bar/dock/tray/modules",
+      "FR-B1\u2013B7"
+    ],
+    [
+      "6",
+      "Widget drag/grid/persistence",
+      "FR-WD3"
+    ],
+    [
+      "7",
+      "Dynamic discovery/gallery",
+      "FR-WD1, WD4"
+    ],
+    [
+      "8",
+      "S/M/L and four profiles",
+      "FR-WD2, WD5"
+    ],
+    [
+      "9",
+      "Real shared metrics daemon",
+      "FR-M1\u2013M3"
+    ],
+    [
+      "10",
+      "Provider isolation/empty/error states",
+      "FR-M4, WD7"
+    ],
+    [
+      "11",
+      "Full system HUD",
+      "FR-H2"
+    ],
+    [
+      "12",
+      "Full network HUD and Wi-Fi controls",
+      "FR-H3 + user extension"
+    ],
+    [
+      "13",
+      "Dev container/k8s/git/CI/services actions",
+      "FR-H4"
+    ],
+    [
+      "14",
+      "Kali tool row and monitor mode",
+      "FR-K1"
+    ],
+    [
+      "15",
+      "Persistent tmux devtools drawer",
+      "FR-H7"
+    ],
+    [
+      "16",
+      "Native launcher/notifications/hotkeys",
+      "FR-L1\u2013L4 / FR-C4"
+    ],
+    [
+      "17",
+      "Wallpaper adaptation/readability guard",
+      "FR-WP1\u2013WP4 / G5"
+    ],
+    [
+      "18",
+      "Install/doctor/rollback/uninstall",
+      "FR-I1\u2013I10 / C7\u2013C8"
+    ],
+    [
+      "19",
+      "App themes and toolkit bridging",
+      "FR-A1\u2013A4 / W5"
+    ],
+    [
+      "20",
+      "Login/lock/boot/packages/portability tests",
+      "FR-S1\u2013S3 / X1\u2013X5"
+    ]
+  ],
+  "inventory": [
+    {
+      "path": "bin/ttox-theme",
+      "sha256": "c1df7d257c0de1633b6a98a1d7f84ed6a52b145c2d28a32b2a619dc34329143d"
+    },
+    {
+      "path": "bin/ttox_runtime.py",
+      "sha256": "548261daee7696b75f044006774227c2845f51242bd9456d9d3471eadb60919e"
+    },
+    {
+      "path": "build/__init__.py",
+      "sha256": "8762fd896be327c0c5ebee092e257ae783c66a2e55d753fb960d874084bcadf8"
+    },
+    {
+      "path": "build/lib.py",
+      "sha256": "2717d9f24ddcbab4b0bdfc084e4e2d9dd3bdb6353854f98b603b75043a53503e"
+    },
+    {
+      "path": "build/targets/colors.py",
+      "sha256": "624f7ddda714c6461176ad83595ad99d5af7020670648e277d7417fae70fd469"
+    },
+    {
+      "path": "install.sh",
+      "sha256": "77e0ceec2070a874a16e71c44ee4b72e261694dc4ca4ea81e2ae6762ffaa0495"
+    },
+    {
+      "path": "palettes.py",
+      "sha256": "4cba377cc6f833eb225c82fa4f6634f3437273d04aa2b61dcb17f8c4044bc584"
+    },
+    {
+      "path": "scripts/detect.sh",
+      "sha256": "b5e0fcf9cbc065313bac93983366b72c1e38a078d3054d74127c18317d392f17"
+    },
+    {
+      "path": "scripts/lib.sh",
+      "sha256": "27c3db0389d2eb1f5cf99bfc4c8d049c0f46240ae3db6cb9c4e06e3a8e6b5e37"
+    },
+    {
+      "path": "tokens.py",
+      "sha256": "e2fea577ebc9490b10751fa10ebdb0e869db5d2519c0c7465376e89e6c38d52f"
+    },
+    {
+      "path": "uninstall.sh",
+      "sha256": "f540c1d77cb122afc88fd927d8659f58bbf3e33e53ca9131ce773681897daeb5"
+    }
+  ],
+  "checks": {
+    "python_syntax_files": 6,
+    "bash_syntax_files": 5,
+    "shellcheck": false,
+    "cli_smoke": {
+      "--help": 0,
+      "--version": 0,
+      "invalid-command": 2,
+      "rollback --help": 0,
+      "new-widget --help": 0,
+      "enable --help": 0
+    }
+  },
+  "repository": {
+    "requested": "TTox-Tech/MinimalistiX-TToxThemes",
+    "resolved": "TTox-Tech/TToxThemes",
+    "reported_size": 0,
+    "pushes_to_user_repository_in_this_session": 0
+  },
+  "scope_note": "Historical audit of the 17 November 2026 local scaffold. This inventory does not describe the current GitHub repository, which includes newer native generator and daemon code. See the repository root SPEC.md for the active native build contract."
+}

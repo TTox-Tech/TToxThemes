@@ -1,0 +1,49 @@
+/* Material roles come from themes.js; charcoal is structure, silver is light. */
+body:has(#ttox-room[data-material="symbiote"]){background:#14171c}
+#ttox-room #room-theme-description{font-size:11px;color:var(--r-muted);margin:0 0 14px}
+#ttox-room[data-material="symbiote"]{--r-liquid-base:var(--r-surface);--r-wet-line:color-mix(in srgb,var(--r-shine) 42%,transparent)}
+#ttox-room[data-material="symbiote"] .room-wallpaper{background:var(--r-bg) url('symbiote.svg') 78% 50% / cover no-repeat}
+#ttox-room[data-material="symbiote"] .room-wallpaper::after{display:none}
+#ttox-room[data-material="symbiote"] .room-widget{position:relative;isolation:isolate;background:linear-gradient(145deg,color-mix(in srgb,var(--r-raised) 82%,transparent),transparent 62%),color-mix(in srgb,var(--r-surface) 91%,transparent);border:1px solid var(--r-edge);border-radius:20px 15px 22px 17px;box-shadow:inset 0 1px var(--r-wet-line),inset 0 -1px #0008,0 12px 24px #0003;--r-liquid-base:var(--r-surface)}
+#ttox-room[data-material="symbiote"] .room-widget>header{font-size:10px;color:var(--r-fg);letter-spacing:1.1px}
+#ttox-room[data-material="symbiote"] .room-terminal{position:relative;isolation:isolate;overflow:visible;border:1px solid var(--r-edge);border-radius:22px 17px 26px 19px;background:linear-gradient(160deg,var(--r-surface),var(--r-inset) 65%);box-shadow:inset 0 1px var(--r-wet-line),0 15px 40px #0007;--r-liquid-base:var(--r-inset)}
+#ttox-room[data-material="symbiote"] .room-terminal>header{background:color-mix(in srgb,var(--r-raised) 60%,transparent);border-radius:inherit;color:var(--r-fg);letter-spacing:.5px}
+#ttox-room[data-material="symbiote"] .room-terminal-body{font-size:11px}
+#ttox-room[data-material="symbiote"] .room-terminal>footer{background:color-mix(in srgb,var(--r-raised) 35%,transparent);border-radius:0 0 24px 18px}
+#ttox-room[data-material="symbiote"] .room-bar{isolation:isolate;z-index:2;height:40px;border-color:var(--r-edge);background:linear-gradient(180deg,var(--r-raised),var(--r-surface));box-shadow:inset 0 1px var(--r-wet-line),0 7px 22px #0006;border-radius:22px 18px 24px 19px;--r-liquid-base:var(--r-surface)}
+#ttox-room[data-material="symbiote"] .room-dock{isolation:isolate;background:linear-gradient(145deg,var(--r-raised),var(--r-inset));border-color:var(--r-edge);box-shadow:inset 0 1px var(--r-wet-line),0 10px 20px #0005;border-radius:22px 16px 25px 18px;--r-liquid-base:var(--r-inset)}
+#ttox-room[data-material="symbiote"] .room-bar-middle{color:var(--r-fg);font-size:9px;letter-spacing:1px}
+#ttox-room[data-material="symbiote"] .room-panel{isolation:isolate;overflow:visible;--r-liquid-base:var(--r-surface);border-radius:27px 20px 31px 22px;border-color:var(--r-edge);background:linear-gradient(155deg,var(--r-raised),var(--r-surface) 38%);box-shadow:inset 0 1px var(--r-wet-line),0 24px 70px #0009}
+#ttox-room[data-material="symbiote"] .room-panel>header{border-radius:inherit}
+#ttox-room[data-material="symbiote"] .room-quick-grid>button,#ttox-room[data-material="symbiote"] .room-dock>button,#ttox-room[data-material="symbiote"] #room-shade-button,#ttox-room[data-material="symbiote"] .room-play{position:relative;isolation:isolate;overflow:visible;border-radius:22px 18px 24px 18px;--r-liquid-base:var(--r-raised);background:linear-gradient(170deg,color-mix(in srgb,var(--r-shine) 15%,var(--r-raised)),var(--r-raised) 44%,var(--r-inset));border:1px solid var(--r-edge);box-shadow:inset 0 1px var(--r-wet-line),0 4px 9px #0004;color:var(--r-fg)}
+#ttox-room[data-material="symbiote"] .room-quick-grid>button[aria-pressed="true"],#ttox-room[data-material="symbiote"] #room-shade-button[aria-expanded="true"]{--r-liquid-base:var(--r-selected);background:linear-gradient(165deg,var(--r-selected),var(--r-raised));border-color:var(--r-shine);color:var(--r-fg);box-shadow:inset 0 1px var(--r-shine),0 5px 15px #0005}
+#ttox-room[data-material="symbiote"] .room-quick-grid>button[aria-pressed="true"] b::after{content:' •';color:var(--r-shine)}
+#ttox-room[data-material="symbiote"] .room-notification{position:relative;isolation:isolate;padding:12px 10px;margin:8px 0;border:1px solid var(--r-edge);border-radius:15px 11px 19px 12px;background:var(--r-inset);--r-liquid-base:var(--r-inset)}
+#ttox-room[data-material="symbiote"] .room-art{background:radial-gradient(ellipse at 30% 15%,var(--r-edge),var(--r-inset) 70%);color:var(--r-shine);box-shadow:inset 0 1px var(--r-wet-line);border-radius:15px 9px 16px 11px}
+#ttox-room[data-material="symbiote"] .room-shade-media{border:1px solid var(--r-edge);background:var(--r-inset);border-radius:18px 13px 22px 14px}
+#ttox-room[data-material="symbiote"] #room-launch{position:relative;isolation:isolate;--r-liquid-base:var(--r-raised);color:transparent;min-width:27px;min-height:28px}
+#ttox-room[data-material="symbiote"] #room-launch::before,#ttox-room[data-material="symbiote"] #room-launch::after{content:'';position:absolute;top:7px;width:10px;height:13px;background:var(--r-shine);pointer-events:none}
+#ttox-room[data-material="symbiote"] #room-launch::before{left:3px;clip-path:polygon(0 0,100% 48%,92% 100%,30% 71%)}
+#ttox-room[data-material="symbiote"] #room-launch::after{right:3px;clip-path:polygon(100% 0,0 48%,8% 100%,70% 71%)}
+#ttox-room .room-liquid-layer{position:absolute;left:calc(-1 * var(--liquid-margin));top:calc(-1 * var(--liquid-margin));width:calc(100% + 2 * var(--liquid-margin));height:calc(100% + 2 * var(--liquid-margin));pointer-events:none;z-index:-1;display:block;isolation:isolate}
+#ttox-room .room-liquid-layer>canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#ttox-room .room-liquid-layer>canvas:first-child{z-index:0}#ttox-room .room-liquid-layer>canvas:last-child{z-index:1}
+#ttox-room[data-liquid="live"] .room-liquid-active{background:transparent!important;box-shadow:none!important;border-color:transparent!important}
+#ttox-room[data-material="symbiote"] .room-widget.room-liquid-active,#ttox-room[data-material="symbiote"] .room-terminal.room-liquid-active{z-index:3}
+#ttox-room[data-material="symbiote"] .room-lite :is(.room-widget,.room-terminal,.room-panel){box-shadow:inset 0 1px var(--r-wet-line)}
+#ttox-room #room-surface-status{color:var(--r-muted);font-size:11px}
+/* The isolated source demo remains available for comparing the reference. */
+#ttox-room .room-material-stage{position:relative;isolation:isolate;z-index:1;min-height:590px;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+#ttox-room #room-venom-stage{position:relative;width:100%;height:460px;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+#ttox-room #room-venom-stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#ttox-room [data-layer="liquid"]{z-index:10}#ttox-room [data-layer="threads"]{z-index:30}
+#ttox-room #room-venom-button{position:relative;z-index:20;max-width:calc(100% - 32px);height:72px;padding:0 38px;border:0;border-radius:999px;background:linear-gradient(180deg,var(--r-raised),var(--r-bg) 42%,var(--r-inset));box-shadow:inset 0 1px var(--r-edge);color:var(--r-fg);font:600 18px/1 system-ui,sans-serif;cursor:pointer;transition:none}
+#ttox-room #room-venom-stage:has(canvas[data-state]) #room-venom-button{background:transparent;box-shadow:none}
+#ttox-room #room-venom-stage:has(canvas[hidden]) #room-venom-button{background:linear-gradient(180deg,var(--r-raised),var(--r-bg) 42%,var(--r-inset))}
+#ttox-room .room-material-label{position:absolute;left:4px;top:0;pointer-events:none}
+#ttox-room .room-material-label b{display:block;color:var(--r-fg);font:500 20px system-ui,sans-serif;letter-spacing:2px}
+#ttox-room .room-material-label small{display:block;color:var(--r-muted);margin-top:9px;font:10px ui-monospace,monospace;letter-spacing:1px}
+#ttox-room .room-material-caption{align-self:flex-start;color:var(--r-muted);font:11px/1.8 ui-monospace,monospace}
+#ttox-room #room-liquid-status{display:block;font-size:10px;opacity:.8}
+#ttox-room .room-material-view{padding-right:28px}
+@media(max-width:520px){#ttox-room .room-material-view{min-height:800px;padding-right:16px}#ttox-room .room-material-stage{min-height:640px}#ttox-room #room-venom-stage{height:500px}#ttox-room #room-venom-button{font-size:16px;padding:0 27px;height:66px}#ttox-room .room-material-label b{font-size:17px}}

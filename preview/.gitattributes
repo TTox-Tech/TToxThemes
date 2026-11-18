@@ -1,0 +1,2 @@
+# Preserve the supplied reference's CRLF line endings.
+src/reference/VenomButton.originkit.tsx -text whitespace=cr-at-eol
